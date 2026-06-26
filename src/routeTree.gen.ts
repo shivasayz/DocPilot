@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WidgetRouteImport } from './routes/widget'
 import { Route as TrackerRouteImport } from './routes/tracker'
+import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as NotesRouteImport } from './routes/notes'
 import { Route as KnowledgeRouteImport } from './routes/knowledge'
 import { Route as ChatRouteImport } from './routes/chat'
@@ -24,6 +25,11 @@ const WidgetRoute = WidgetRouteImport.update({
 const TrackerRoute = TrackerRouteImport.update({
   id: '/tracker',
   path: '/tracker',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
   getParentRoute: () => rootRouteImport,
 } as any)
 const NotesRoute = NotesRouteImport.update({
@@ -52,6 +58,7 @@ export interface FileRoutesByFullPath {
   '/chat': typeof ChatRoute
   '/knowledge': typeof KnowledgeRoute
   '/notes': typeof NotesRoute
+  '/profile': typeof ProfileRoute
   '/tracker': typeof TrackerRoute
   '/widget': typeof WidgetRoute
 }
@@ -60,6 +67,7 @@ export interface FileRoutesByTo {
   '/chat': typeof ChatRoute
   '/knowledge': typeof KnowledgeRoute
   '/notes': typeof NotesRoute
+  '/profile': typeof ProfileRoute
   '/tracker': typeof TrackerRoute
   '/widget': typeof WidgetRoute
 }
@@ -69,20 +77,36 @@ export interface FileRoutesById {
   '/chat': typeof ChatRoute
   '/knowledge': typeof KnowledgeRoute
   '/notes': typeof NotesRoute
+  '/profile': typeof ProfileRoute
   '/tracker': typeof TrackerRoute
   '/widget': typeof WidgetRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/chat' | '/knowledge' | '/notes' | '/tracker' | '/widget'
+  fullPaths:
+    | '/'
+    | '/chat'
+    | '/knowledge'
+    | '/notes'
+    | '/profile'
+    | '/tracker'
+    | '/widget'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/chat' | '/knowledge' | '/notes' | '/tracker' | '/widget'
+  to:
+    | '/'
+    | '/chat'
+    | '/knowledge'
+    | '/notes'
+    | '/profile'
+    | '/tracker'
+    | '/widget'
   id:
     | '__root__'
     | '/'
     | '/chat'
     | '/knowledge'
     | '/notes'
+    | '/profile'
     | '/tracker'
     | '/widget'
   fileRoutesById: FileRoutesById
@@ -92,6 +116,7 @@ export interface RootRouteChildren {
   ChatRoute: typeof ChatRoute
   KnowledgeRoute: typeof KnowledgeRoute
   NotesRoute: typeof NotesRoute
+  ProfileRoute: typeof ProfileRoute
   TrackerRoute: typeof TrackerRoute
   WidgetRoute: typeof WidgetRoute
 }
@@ -110,6 +135,13 @@ declare module '@tanstack/react-router' {
       path: '/tracker'
       fullPath: '/tracker'
       preLoaderRoute: typeof TrackerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/notes': {
@@ -148,6 +180,7 @@ const rootRouteChildren: RootRouteChildren = {
   ChatRoute: ChatRoute,
   KnowledgeRoute: KnowledgeRoute,
   NotesRoute: NotesRoute,
+  ProfileRoute: ProfileRoute,
   TrackerRoute: TrackerRoute,
   WidgetRoute: WidgetRoute,
 }
