@@ -9,12 +9,18 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WidgetRouteImport } from './routes/widget'
 import { Route as TrackerRouteImport } from './routes/tracker'
 import { Route as NotesRouteImport } from './routes/notes'
 import { Route as KnowledgeRouteImport } from './routes/knowledge'
 import { Route as ChatRouteImport } from './routes/chat'
 import { Route as IndexRouteImport } from './routes/index'
 
+const WidgetRoute = WidgetRouteImport.update({
+  id: '/widget',
+  path: '/widget',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TrackerRoute = TrackerRouteImport.update({
   id: '/tracker',
   path: '/tracker',
@@ -47,6 +53,7 @@ export interface FileRoutesByFullPath {
   '/knowledge': typeof KnowledgeRoute
   '/notes': typeof NotesRoute
   '/tracker': typeof TrackerRoute
+  '/widget': typeof WidgetRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -54,6 +61,7 @@ export interface FileRoutesByTo {
   '/knowledge': typeof KnowledgeRoute
   '/notes': typeof NotesRoute
   '/tracker': typeof TrackerRoute
+  '/widget': typeof WidgetRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -62,13 +70,21 @@ export interface FileRoutesById {
   '/knowledge': typeof KnowledgeRoute
   '/notes': typeof NotesRoute
   '/tracker': typeof TrackerRoute
+  '/widget': typeof WidgetRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/chat' | '/knowledge' | '/notes' | '/tracker'
+  fullPaths: '/' | '/chat' | '/knowledge' | '/notes' | '/tracker' | '/widget'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/chat' | '/knowledge' | '/notes' | '/tracker'
-  id: '__root__' | '/' | '/chat' | '/knowledge' | '/notes' | '/tracker'
+  to: '/' | '/chat' | '/knowledge' | '/notes' | '/tracker' | '/widget'
+  id:
+    | '__root__'
+    | '/'
+    | '/chat'
+    | '/knowledge'
+    | '/notes'
+    | '/tracker'
+    | '/widget'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -77,10 +93,18 @@ export interface RootRouteChildren {
   KnowledgeRoute: typeof KnowledgeRoute
   NotesRoute: typeof NotesRoute
   TrackerRoute: typeof TrackerRoute
+  WidgetRoute: typeof WidgetRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/widget': {
+      id: '/widget'
+      path: '/widget'
+      fullPath: '/widget'
+      preLoaderRoute: typeof WidgetRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/tracker': {
       id: '/tracker'
       path: '/tracker'
@@ -125,6 +149,7 @@ const rootRouteChildren: RootRouteChildren = {
   KnowledgeRoute: KnowledgeRoute,
   NotesRoute: NotesRoute,
   TrackerRoute: TrackerRoute,
+  WidgetRoute: WidgetRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
