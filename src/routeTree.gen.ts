@@ -9,11 +9,17 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TrackerRouteImport } from './routes/tracker'
 import { Route as NotesRouteImport } from './routes/notes'
 import { Route as KnowledgeRouteImport } from './routes/knowledge'
 import { Route as ChatRouteImport } from './routes/chat'
 import { Route as IndexRouteImport } from './routes/index'
 
+const TrackerRoute = TrackerRouteImport.update({
+  id: '/tracker',
+  path: '/tracker',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const NotesRoute = NotesRouteImport.update({
   id: '/notes',
   path: '/notes',
@@ -40,12 +46,14 @@ export interface FileRoutesByFullPath {
   '/chat': typeof ChatRoute
   '/knowledge': typeof KnowledgeRoute
   '/notes': typeof NotesRoute
+  '/tracker': typeof TrackerRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/chat': typeof ChatRoute
   '/knowledge': typeof KnowledgeRoute
   '/notes': typeof NotesRoute
+  '/tracker': typeof TrackerRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -53,13 +61,14 @@ export interface FileRoutesById {
   '/chat': typeof ChatRoute
   '/knowledge': typeof KnowledgeRoute
   '/notes': typeof NotesRoute
+  '/tracker': typeof TrackerRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/chat' | '/knowledge' | '/notes'
+  fullPaths: '/' | '/chat' | '/knowledge' | '/notes' | '/tracker'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/chat' | '/knowledge' | '/notes'
-  id: '__root__' | '/' | '/chat' | '/knowledge' | '/notes'
+  to: '/' | '/chat' | '/knowledge' | '/notes' | '/tracker'
+  id: '__root__' | '/' | '/chat' | '/knowledge' | '/notes' | '/tracker'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -67,10 +76,18 @@ export interface RootRouteChildren {
   ChatRoute: typeof ChatRoute
   KnowledgeRoute: typeof KnowledgeRoute
   NotesRoute: typeof NotesRoute
+  TrackerRoute: typeof TrackerRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/tracker': {
+      id: '/tracker'
+      path: '/tracker'
+      fullPath: '/tracker'
+      preLoaderRoute: typeof TrackerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/notes': {
       id: '/notes'
       path: '/notes'
@@ -107,6 +124,7 @@ const rootRouteChildren: RootRouteChildren = {
   ChatRoute: ChatRoute,
   KnowledgeRoute: KnowledgeRoute,
   NotesRoute: NotesRoute,
+  TrackerRoute: TrackerRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
