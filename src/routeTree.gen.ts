@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WidgetRouteImport } from './routes/widget'
 import { Route as TrackerRouteImport } from './routes/tracker'
+import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as NotesRouteImport } from './routes/notes'
 import { Route as KnowledgeRouteImport } from './routes/knowledge'
@@ -25,6 +26,11 @@ const WidgetRoute = WidgetRouteImport.update({
 const TrackerRoute = TrackerRouteImport.update({
   id: '/tracker',
   path: '/tracker',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProfileRoute = ProfileRouteImport.update({
@@ -59,6 +65,7 @@ export interface FileRoutesByFullPath {
   '/knowledge': typeof KnowledgeRoute
   '/notes': typeof NotesRoute
   '/profile': typeof ProfileRoute
+  '/settings': typeof SettingsRoute
   '/tracker': typeof TrackerRoute
   '/widget': typeof WidgetRoute
 }
@@ -68,6 +75,7 @@ export interface FileRoutesByTo {
   '/knowledge': typeof KnowledgeRoute
   '/notes': typeof NotesRoute
   '/profile': typeof ProfileRoute
+  '/settings': typeof SettingsRoute
   '/tracker': typeof TrackerRoute
   '/widget': typeof WidgetRoute
 }
@@ -78,6 +86,7 @@ export interface FileRoutesById {
   '/knowledge': typeof KnowledgeRoute
   '/notes': typeof NotesRoute
   '/profile': typeof ProfileRoute
+  '/settings': typeof SettingsRoute
   '/tracker': typeof TrackerRoute
   '/widget': typeof WidgetRoute
 }
@@ -89,6 +98,7 @@ export interface FileRouteTypes {
     | '/knowledge'
     | '/notes'
     | '/profile'
+    | '/settings'
     | '/tracker'
     | '/widget'
   fileRoutesByTo: FileRoutesByTo
@@ -98,6 +108,7 @@ export interface FileRouteTypes {
     | '/knowledge'
     | '/notes'
     | '/profile'
+    | '/settings'
     | '/tracker'
     | '/widget'
   id:
@@ -107,6 +118,7 @@ export interface FileRouteTypes {
     | '/knowledge'
     | '/notes'
     | '/profile'
+    | '/settings'
     | '/tracker'
     | '/widget'
   fileRoutesById: FileRoutesById
@@ -117,6 +129,7 @@ export interface RootRouteChildren {
   KnowledgeRoute: typeof KnowledgeRoute
   NotesRoute: typeof NotesRoute
   ProfileRoute: typeof ProfileRoute
+  SettingsRoute: typeof SettingsRoute
   TrackerRoute: typeof TrackerRoute
   WidgetRoute: typeof WidgetRoute
 }
@@ -135,6 +148,13 @@ declare module '@tanstack/react-router' {
       path: '/tracker'
       fullPath: '/tracker'
       preLoaderRoute: typeof TrackerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/profile': {
@@ -181,6 +201,7 @@ const rootRouteChildren: RootRouteChildren = {
   KnowledgeRoute: KnowledgeRoute,
   NotesRoute: NotesRoute,
   ProfileRoute: ProfileRoute,
+  SettingsRoute: SettingsRoute,
   TrackerRoute: TrackerRoute,
   WidgetRoute: WidgetRoute,
 }
