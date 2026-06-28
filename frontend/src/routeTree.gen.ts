@@ -16,6 +16,7 @@ import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as NotesRouteImport } from './routes/notes'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as KnowledgeRouteImport } from './routes/knowledge'
+import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as ChatRouteImport } from './routes/chat'
 import { Route as IndexRouteImport } from './routes/index'
 
@@ -54,6 +55,11 @@ const KnowledgeRoute = KnowledgeRouteImport.update({
   path: '/knowledge',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ChatRoute = ChatRouteImport.update({
   id: '/chat',
   path: '/chat',
@@ -68,6 +74,7 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/chat': typeof ChatRoute
+  '/forgot-password': typeof ForgotPasswordRoute
   '/knowledge': typeof KnowledgeRoute
   '/login': typeof LoginRoute
   '/notes': typeof NotesRoute
@@ -79,6 +86,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/chat': typeof ChatRoute
+  '/forgot-password': typeof ForgotPasswordRoute
   '/knowledge': typeof KnowledgeRoute
   '/login': typeof LoginRoute
   '/notes': typeof NotesRoute
@@ -91,6 +99,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/chat': typeof ChatRoute
+  '/forgot-password': typeof ForgotPasswordRoute
   '/knowledge': typeof KnowledgeRoute
   '/login': typeof LoginRoute
   '/notes': typeof NotesRoute
@@ -104,6 +113,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/chat'
+    | '/forgot-password'
     | '/knowledge'
     | '/login'
     | '/notes'
@@ -115,6 +125,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/chat'
+    | '/forgot-password'
     | '/knowledge'
     | '/login'
     | '/notes'
@@ -126,6 +137,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/chat'
+    | '/forgot-password'
     | '/knowledge'
     | '/login'
     | '/notes'
@@ -138,6 +150,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ChatRoute: typeof ChatRoute
+  ForgotPasswordRoute: typeof ForgotPasswordRoute
   KnowledgeRoute: typeof KnowledgeRoute
   LoginRoute: typeof LoginRoute
   NotesRoute: typeof NotesRoute
@@ -198,6 +211,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof KnowledgeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/forgot-password': {
+      id: '/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof ForgotPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/chat': {
       id: '/chat'
       path: '/chat'
@@ -218,6 +238,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ChatRoute: ChatRoute,
+  ForgotPasswordRoute: ForgotPasswordRoute,
   KnowledgeRoute: KnowledgeRoute,
   LoginRoute: LoginRoute,
   NotesRoute: NotesRoute,

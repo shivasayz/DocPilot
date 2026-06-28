@@ -1,5 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { motion } from "framer-motion";
+import { motion, LayoutGroup } from "framer-motion";
 import {
   LayoutDashboard,
   Database,
@@ -12,7 +12,7 @@ import {
   PanelLeftClose,
   PanelLeftOpen,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, type ElementType } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -30,47 +30,58 @@ const secondary = [
   { to: "/settings", label: "Settings", icon: Settings },
 ];
 
+function NavItem({ to, label, icon: Icon, collapsed, active }: {
+  to: string;
+  label: string;
+  icon: ElementType;
+  collapsed: boolean;
+  active: boolean;
+}) {
+  const link = (
+    <Link
+      to={to}
+      className={cn(
+        "group relative flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-all duration-150",
+        collapsed && "justify-center px-2",
+        !active && "text-sidebar-foreground hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground hover:translate-x-0.5",
+      )}
+    >
+      {active && (
+        <motion.span
+          layoutId="sidebar-indicator"
+          transition={{ type: "spring", stiffness: 400, damping: 30 }}
+          className="absolute left-0 inset-y-1 w-[3px] rounded-full bg-accent"
+        />
+      )}
+      {active && (
+        <motion.span
+          layoutId="sidebar-bg"
+          transition={{ type: "spring", stiffness: 400, damping: 30 }}
+          className="absolute inset-0 rounded-md bg-accent/10 ring-1 ring-accent/20"
+        />
+      )}
+      <Icon className={cn("relative size-4 shrink-0", active ? "opacity-100" : "opacity-80")} />
+      {!collapsed && <span className="relative truncate">{active ? <span className="text-sidebar-accent-foreground">{label}</span> : label}</span>}
+    </Link>
+  );
+
+  if (collapsed) {
+    return (
+      <Tooltip>
+        <TooltipTrigger asChild>{link}</TooltipTrigger>
+        <TooltipContent side="right" sideOffset={8}>{label}</TooltipContent>
+      </Tooltip>
+    );
+  }
+
+  return link;
+}
+
 export function AppSidebar() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const [collapsed, setCollapsed] = useState(false);
 
-  const Item = ({ to, label, icon: Icon }: (typeof nav)[number]) => {
-    const active = to === "/" ? pathname === "/" : pathname.startsWith(to);
-
-    const link = (
-      <Link
-        to={to}
-        className={cn(
-          "group relative flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-all duration-150",
-          collapsed && "justify-center px-2",
-          active
-            ? "bg-sidebar-accent text-sidebar-accent-foreground"
-            : "text-sidebar-foreground hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground hover:translate-x-0.5",
-        )}
-      >
-        {active && (
-          <motion.span
-            layoutId="sidebar-active"
-            transition={{ type: "spring", stiffness: 380, damping: 32 }}
-            className="absolute left-0 top-1/2 h-5 w-0.5 -translate-y-1/2 rounded-r bg-accent"
-          />
-        )}
-        <Icon className="size-4 shrink-0 opacity-80" />
-        {!collapsed && <span className="truncate">{label}</span>}
-      </Link>
-    );
-
-    if (collapsed) {
-      return (
-        <Tooltip>
-          <TooltipTrigger asChild>{link}</TooltipTrigger>
-          <TooltipContent side="right" sideOffset={8}>{label}</TooltipContent>
-        </Tooltip>
-      );
-    }
-
-    return link;
-  };
+  const isActive = (to: string) => to === "/" ? pathname === "/" : pathname.startsWith(to);
 
   return (
     <TooltipProvider delayDuration={0}>
@@ -95,28 +106,30 @@ export function AppSidebar() {
         </div>
 
         <nav className={cn("flex-1 overflow-y-auto scrollbar-thin py-4", collapsed ? "px-2" : "px-3")}>
-          {!collapsed && (
-            <div className="px-2 pb-1 text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
-              Workspace
+          <LayoutGroup>
+            {!collapsed && (
+              <div className="px-2 pb-1 text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+                Workspace
+              </div>
+            )}
+            <div className="space-y-0.5">
+              {nav.map((n) => (
+                <NavItem key={n.to} {...n} collapsed={collapsed} active={isActive(n.to)} />
+              ))}
             </div>
-          )}
-          <div className="space-y-0.5">
-            {nav.map((n) => (
-              <Item key={n.to} {...n} />
-            ))}
-          </div>
 
-          {!collapsed && (
-            <div className="mt-6 px-2 pb-1 text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
-              Account
+            {!collapsed && (
+              <div className="mt-6 px-2 pb-1 text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+                Account
+              </div>
+            )}
+            {collapsed && <div className="my-3 h-px bg-sidebar-border" />}
+            <div className="space-y-0.5">
+              {secondary.map((n) => (
+                <NavItem key={n.to} {...n} collapsed={collapsed} active={isActive(n.to)} />
+              ))}
             </div>
-          )}
-          {collapsed && <div className="my-3 h-px bg-sidebar-border" />}
-          <div className="space-y-0.5">
-            {secondary.map((n) => (
-              <Item key={n.to} {...n} />
-            ))}
-          </div>
+          </LayoutGroup>
         </nav>
 
         {!collapsed && (

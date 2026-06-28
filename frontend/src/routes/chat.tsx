@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
 import {
   Send,
   Plus,
@@ -138,18 +138,34 @@ function ChatPage() {
           </Button>
         </div>
         <div className="flex-1 overflow-y-auto scrollbar-thin px-2 pb-3">
-          {threads.map((t) => (
-            <button
-              key={t.id}
-              onClick={() => setActiveId(t.id)}
-              className={`group flex w-full flex-col items-start gap-0.5 rounded-md px-3 py-2 text-left transition-colors ${
-                t.id === activeId ? "bg-muted" : "hover:bg-muted/60"
-              }`}
-            >
-              <span className="line-clamp-1 text-sm">{t.title}</span>
-              <span className="text-[11px] text-muted-foreground">{t.when}</span>
-            </button>
-          ))}
+          <LayoutGroup>
+            {threads.map((t) => (
+              <button
+                key={t.id}
+                onClick={() => setActiveId(t.id)}
+                className={`group relative flex w-full flex-col items-start gap-0.5 rounded-md px-3 py-2 text-left transition-colors ${
+                  t.id === activeId ? "text-foreground" : "text-muted-foreground hover:bg-muted/60"
+                }`}
+              >
+                {t.id === activeId && (
+                  <motion.span
+                    layoutId="chat-thread-indicator"
+                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                    className="absolute left-0 inset-y-1 w-[3px] rounded-full bg-accent"
+                  />
+                )}
+                {t.id === activeId && (
+                  <motion.span
+                    layoutId="chat-thread-active"
+                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                    className="absolute inset-0 rounded-md bg-accent/10 ring-1 ring-accent/20"
+                  />
+                )}
+                <span className="relative line-clamp-1 text-sm">{t.title}</span>
+                <span className="relative text-[11px] text-muted-foreground">{t.when}</span>
+              </button>
+            ))}
+          </LayoutGroup>
         </div>
         <div className="border-t border-border p-3">
           <Button

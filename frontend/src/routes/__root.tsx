@@ -87,7 +87,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className="light">
       <head>
         <HeadContent />
       </head>
@@ -103,8 +103,9 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const isLogin = useMatch({ from: "/login", shouldThrow: false });
   const isSignup = useMatch({ from: "/signup", shouldThrow: false });
+  const isForgot = useMatch({ from: "/forgot-password", shouldThrow: false });
 
-  if (isLogin || isSignup) {
+  if (isLogin || isSignup || isForgot) {
     return (
       <QueryClientProvider client={queryClient}>
         <Outlet />

@@ -15,7 +15,7 @@ import { useAuth } from "@/lib/auth";
 import { toast } from "sonner";
 
 export function TopNav() {
-  const [dark, setDark] = useState(true);
+  const [dark, setDark] = useState(false);
   const navigate = useNavigate();
   const { user, logout } = useAuth();
 

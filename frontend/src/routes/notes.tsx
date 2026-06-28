@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
 import {
   Plus,
   Search,
@@ -182,32 +182,49 @@ function NotesPage() {
           </Button>
         </div>
         <div className="flex-1 overflow-y-auto scrollbar-thin px-2">
-          {folders.map((f) => {
-            const I = f.icon;
-            const count = notes.filter((n) =>
-              f.key === "all" ? true : f.key === "pinned" ? n.pinned : n.favorite,
-            ).length;
-            return (
-              <button
-                key={f.key}
-                onClick={() => {
-                  setFolder(f.key);
-                  setTag(null);
-                }}
-                className={`flex w-full items-center justify-between rounded-md px-2.5 py-1.5 text-sm transition-colors ${
-                  folder === f.key && !tag
-                    ? "bg-muted text-foreground"
-                    : "text-muted-foreground hover:bg-muted/60"
-                }`}
-              >
-                <span className="flex items-center gap-2">
-                  <I className="size-3.5" />
-                  {f.name}
-                </span>
-                <span className="text-[11px] text-muted-foreground">{count}</span>
-              </button>
-            );
-          })}
+          <LayoutGroup>
+            {folders.map((f) => {
+              const I = f.icon;
+              const count = notes.filter((n) =>
+                f.key === "all" ? true : f.key === "pinned" ? n.pinned : n.favorite,
+              ).length;
+              const isActive = folder === f.key && !tag;
+              return (
+                <button
+                  key={f.key}
+                  onClick={() => {
+                    setFolder(f.key);
+                    setTag(null);
+                  }}
+                  className={`relative flex w-full items-center justify-between rounded-md px-2.5 py-1.5 text-sm transition-colors ${
+                    isActive
+                      ? "text-foreground"
+                      : "text-muted-foreground hover:bg-muted/60"
+                  }`}
+                >
+                  {isActive && (
+                    <motion.span
+                      layoutId="notes-folder-indicator"
+                      transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                      className="absolute left-0 inset-y-1 w-[3px] rounded-full bg-accent"
+                    />
+                  )}
+                  {isActive && (
+                    <motion.span
+                      layoutId="notes-folder-active"
+                      transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                      className="absolute inset-0 rounded-md bg-accent/10 ring-1 ring-accent/20"
+                    />
+                  )}
+                  <span className="relative flex items-center gap-2">
+                    <I className="size-3.5" />
+                    {f.name}
+                  </span>
+                  <span className="relative text-[11px] text-muted-foreground">{count}</span>
+                </button>
+              );
+            })}
+          </LayoutGroup>
           <div className="mt-5 px-2.5 pb-1 text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
             Tags
           </div>
@@ -242,34 +259,52 @@ function NotesPage() {
           </div>
         </div>
         <div className="flex-1 overflow-y-auto scrollbar-thin">
-          <AnimatePresence initial={false}>
-            {filtered.length === 0 && (
-              <div className="px-4 py-10 text-center text-xs text-muted-foreground">No notes found.</div>
-            )}
-            {filtered.map((n) => (
-              <motion.button
-                key={n.id}
-                layout
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                onClick={() => setActiveId(n.id)}
-                className={`block w-full border-b border-border px-4 py-3 text-left transition-colors ${
-                  active?.id === n.id ? "bg-muted/60" : "hover:bg-muted/40"
-                }`}
-              >
-                <div className="flex items-center justify-between">
-                  <span className="line-clamp-1 text-sm font-medium">{n.title}</span>
-                  {n.pinned && <Pin className="size-3 text-accent" />}
-                </div>
-                <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">{n.body || "Empty note"}</p>
-                <div className="mt-2 flex items-center justify-between">
-                  <Badge variant="secondary" className="text-[10px]">#{n.tag}</Badge>
-                  <span className="text-[11px] text-muted-foreground">{n.date}</span>
-                </div>
-              </motion.button>
-            ))}
-          </AnimatePresence>
+          <LayoutGroup>
+            <AnimatePresence initial={false}>
+              {filtered.length === 0 && (
+                <div className="px-4 py-10 text-center text-xs text-muted-foreground">No notes found.</div>
+              )}
+              {filtered.map((n) => (
+                <motion.button
+                  key={n.id}
+                  layout
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  onClick={() => setActiveId(n.id)}
+                  className={`relative block w-full border-b border-border px-4 py-3 text-left transition-colors ${
+                    active?.id === n.id ? "" : "hover:bg-muted/40"
+                  }`}
+                >
+                  {active?.id === n.id && (
+                    <motion.span
+                      layoutId="notes-list-indicator"
+                      transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                      className="absolute left-0 inset-y-2 w-[3px] rounded-full bg-accent"
+                    />
+                  )}
+                  {active?.id === n.id && (
+                    <motion.span
+                      layoutId="notes-list-active"
+                      transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                      className="absolute inset-0 bg-accent/8"
+                    />
+                  )}
+                  <div className="relative">
+                    <div className="flex items-center justify-between">
+                      <span className="line-clamp-1 text-sm font-medium">{n.title}</span>
+                      {n.pinned && <Pin className="size-3 text-accent" />}
+                    </div>
+                    <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">{n.body || "Empty note"}</p>
+                    <div className="mt-2 flex items-center justify-between">
+                      <Badge variant="secondary" className="text-[10px]">#{n.tag}</Badge>
+                      <span className="text-[11px] text-muted-foreground">{n.date}</span>
+                    </div>
+                  </div>
+                </motion.button>
+              ))}
+            </AnimatePresence>
+          </LayoutGroup>
         </div>
       </section>
 
