@@ -15,7 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { PageHeader } from "@/components/page-header";
+import { PageHeader } from "@/components/shared/page-header";
 import { CheckCircle2, KeyRound, Sparkles, Cpu } from "lucide-react";
 import { toast } from "sonner";
 

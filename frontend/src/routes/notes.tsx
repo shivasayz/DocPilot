@@ -23,7 +23,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ConfirmDelete } from "@/components/confirm-delete";
+import { ConfirmDelete } from "@/components/shared/confirm-delete";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/notes")({

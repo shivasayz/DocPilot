@@ -22,9 +22,9 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { Progress } from "@/components/ui/progress";
-import { PageHeader } from "@/components/page-header";
-import { UploadDialog } from "@/components/upload-dialog";
-import { ConfirmDelete } from "@/components/confirm-delete";
+import { PageHeader } from "@/components/shared/page-header";
+import { UploadDialog } from "@/components/shared/upload-dialog";
+import { ConfirmDelete } from "@/components/shared/confirm-delete";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 

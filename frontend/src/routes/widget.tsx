@@ -6,7 +6,7 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Badge } from "@/components/ui/badge";
-import { PageHeader } from "@/components/page-header";
+import { PageHeader } from "@/components/shared/page-header";
 import {
   Select,
   SelectContent,
@@ -15,7 +15,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Sparkles, MonitorDot, Keyboard, Wifi, MicVocal, Camera, Brain } from "lucide-react";
-import { ComingSoonCard } from "@/components/coming-soon";
+import { ComingSoonCard } from "@/components/shared/coming-soon";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/widget")({

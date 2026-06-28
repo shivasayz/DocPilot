@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "@tanstack/react-router";
 import { Search, Bell, Sun, Moon, Command } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
@@ -10,9 +11,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/lib/auth";
+import { toast } from "sonner";
 
 export function TopNav() {
   const [dark, setDark] = useState(true);
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
 
   useEffect(() => {
     const root = document.documentElement;
@@ -24,6 +29,16 @@ export function TopNav() {
       root.classList.add("light");
     }
   }, [dark]);
+
+  const handleSignOut = () => {
+    logout();
+    toast.success("Signed out");
+    navigate({ to: "/login" });
+  };
+
+  const displayName = user?.name ?? "Alex Morgan";
+  const displayEmail = user?.email ?? "alex@copilot.dev";
+  const initials = user?.avatar ?? "AM";
 
   return (
     <header className="sticky top-0 z-30 flex h-14 items-center gap-3 border-b border-border glass px-4 md:px-6">
@@ -58,25 +73,26 @@ export function TopNav() {
             <button className="ml-1 flex items-center gap-2 rounded-md p-1 pr-2 hover:bg-muted">
               <Avatar className="size-7">
                 <AvatarFallback className="bg-accent text-accent-foreground text-xs">
-                  AM
+                  {initials}
                 </AvatarFallback>
               </Avatar>
-              <span className="hidden text-sm font-medium sm:inline">Alex Morgan</span>
+              <span className="hidden text-sm font-medium sm:inline">{displayName}</span>
             </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56">
             <DropdownMenuLabel>
               <div className="flex flex-col">
-                <span className="text-sm">Alex Morgan</span>
-                <span className="text-xs text-muted-foreground">alex@copilot.dev</span>
+                <span className="text-sm">{displayName}</span>
+                <span className="text-xs text-muted-foreground">{displayEmail}</span>
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Profile</DropdownMenuItem>
-            <DropdownMenuItem>Settings</DropdownMenuItem>
-            <DropdownMenuItem>Keyboard shortcuts</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => navigate({ to: "/profile" })}>Profile</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => navigate({ to: "/settings" })}>Settings</DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-destructive">Sign out</DropdownMenuItem>
+            <DropdownMenuItem className="text-destructive" onClick={handleSignOut}>
+              Sign out
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
