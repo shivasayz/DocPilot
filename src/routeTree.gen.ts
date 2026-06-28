@@ -10,7 +10,6 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WidgetRouteImport } from './routes/widget'
-import { Route as TrackerRouteImport } from './routes/tracker'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as NotesRouteImport } from './routes/notes'
@@ -21,11 +20,6 @@ import { Route as IndexRouteImport } from './routes/index'
 const WidgetRoute = WidgetRouteImport.update({
   id: '/widget',
   path: '/widget',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TrackerRoute = TrackerRouteImport.update({
-  id: '/tracker',
-  path: '/tracker',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SettingsRoute = SettingsRouteImport.update({
@@ -66,7 +60,6 @@ export interface FileRoutesByFullPath {
   '/notes': typeof NotesRoute
   '/profile': typeof ProfileRoute
   '/settings': typeof SettingsRoute
-  '/tracker': typeof TrackerRoute
   '/widget': typeof WidgetRoute
 }
 export interface FileRoutesByTo {
@@ -76,7 +69,6 @@ export interface FileRoutesByTo {
   '/notes': typeof NotesRoute
   '/profile': typeof ProfileRoute
   '/settings': typeof SettingsRoute
-  '/tracker': typeof TrackerRoute
   '/widget': typeof WidgetRoute
 }
 export interface FileRoutesById {
@@ -87,7 +79,6 @@ export interface FileRoutesById {
   '/notes': typeof NotesRoute
   '/profile': typeof ProfileRoute
   '/settings': typeof SettingsRoute
-  '/tracker': typeof TrackerRoute
   '/widget': typeof WidgetRoute
 }
 export interface FileRouteTypes {
@@ -99,7 +90,6 @@ export interface FileRouteTypes {
     | '/notes'
     | '/profile'
     | '/settings'
-    | '/tracker'
     | '/widget'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -109,7 +99,6 @@ export interface FileRouteTypes {
     | '/notes'
     | '/profile'
     | '/settings'
-    | '/tracker'
     | '/widget'
   id:
     | '__root__'
@@ -119,7 +108,6 @@ export interface FileRouteTypes {
     | '/notes'
     | '/profile'
     | '/settings'
-    | '/tracker'
     | '/widget'
   fileRoutesById: FileRoutesById
 }
@@ -130,7 +118,6 @@ export interface RootRouteChildren {
   NotesRoute: typeof NotesRoute
   ProfileRoute: typeof ProfileRoute
   SettingsRoute: typeof SettingsRoute
-  TrackerRoute: typeof TrackerRoute
   WidgetRoute: typeof WidgetRoute
 }
 
@@ -141,13 +128,6 @@ declare module '@tanstack/react-router' {
       path: '/widget'
       fullPath: '/widget'
       preLoaderRoute: typeof WidgetRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/tracker': {
-      id: '/tracker'
-      path: '/tracker'
-      fullPath: '/tracker'
-      preLoaderRoute: typeof TrackerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/settings': {
@@ -202,7 +182,6 @@ const rootRouteChildren: RootRouteChildren = {
   NotesRoute: NotesRoute,
   ProfileRoute: ProfileRoute,
   SettingsRoute: SettingsRoute,
-  TrackerRoute: TrackerRoute,
   WidgetRoute: WidgetRoute,
 }
 export const routeTree = rootRouteImport

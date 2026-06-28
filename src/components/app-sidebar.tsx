@@ -1,10 +1,10 @@
 import { Link, useRouterState } from "@tanstack/react-router";
+import { motion } from "framer-motion";
 import {
   LayoutDashboard,
   Database,
   MessagesSquare,
   NotebookPen,
-  LineChart,
   AppWindow,
   User,
   Settings,
@@ -17,7 +17,6 @@ const nav = [
   { to: "/knowledge", label: "Knowledge Sources", icon: Database },
   { to: "/chat", label: "AI Chat", icon: MessagesSquare },
   { to: "/notes", label: "Notes", icon: NotebookPen },
-  { to: "/tracker", label: "Learning Tracker", icon: LineChart },
   { to: "/widget", label: "Widget Settings", icon: AppWindow },
 ];
 
@@ -35,14 +34,18 @@ export function AppSidebar() {
       <Link
         to={to}
         className={cn(
-          "group relative flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors",
+          "group relative flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-all duration-150",
           active
             ? "bg-sidebar-accent text-sidebar-accent-foreground"
-            : "text-sidebar-foreground hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground",
+            : "text-sidebar-foreground hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground hover:translate-x-0.5",
         )}
       >
         {active && (
-          <span className="absolute left-0 top-1/2 h-5 w-0.5 -translate-y-1/2 rounded-r bg-accent" />
+          <motion.span
+            layoutId="sidebar-active"
+            transition={{ type: "spring", stiffness: 380, damping: 32 }}
+            className="absolute left-0 top-1/2 h-5 w-0.5 -translate-y-1/2 rounded-r bg-accent"
+          />
         )}
         <Icon className="size-4 shrink-0 opacity-80" />
         <span className="truncate">{label}</span>
@@ -86,7 +89,10 @@ export function AppSidebar() {
 
       <div className="m-3 rounded-lg border border-sidebar-border bg-sidebar-accent/40 p-3">
         <div className="flex items-center gap-2 text-xs font-medium">
-          <span className="size-1.5 rounded-full bg-success" />
+          <span className="relative flex size-1.5">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success opacity-60" />
+            <span className="relative inline-flex size-1.5 rounded-full bg-success" />
+          </span>
           Local index synced
         </div>
         <p className="mt-1 text-[11px] text-muted-foreground">

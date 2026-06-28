@@ -1,9 +1,9 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import {
   Database,
   FileText,
-  Boxes,
   MessagesSquare,
   Clock,
   Upload,
@@ -13,11 +13,27 @@ import {
   ArrowUpRight,
   Search,
   TrendingUp,
+  Activity,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { PageHeader } from "@/components/page-header";
+import { AnimatedCounter } from "@/components/animated-counter";
+import { UploadDialog } from "@/components/upload-dialog";
+import { ComingSoonCard } from "@/components/coming-soon";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -26,11 +42,17 @@ export const Route = createFileRoute("/")({
   component: Dashboard,
 });
 
-const stats = [
-  { label: "Knowledge Sources", value: "12", delta: "+2 this week", icon: Database },
-  { label: "Indexed Documents", value: "284", delta: "+18 today", icon: FileText },
-  { label: "Total Chunks", value: "12,847", delta: "98% embedded", icon: Boxes },
-  { label: "Questions Asked", value: "1,204", delta: "+47 today", icon: MessagesSquare },
+const stats: { label: string; value: number; delta: string; icon: typeof Database; format?: (n: number) => string }[] = [
+  { label: "Knowledge Sources", value: 12, delta: "+2 this week", icon: Database },
+  { label: "Indexed Documents", value: 284, delta: "+18 today", icon: FileText },
+  { label: "Questions Asked", value: 1204, delta: "+47 today", icon: MessagesSquare },
+  {
+    label: "Today's Learning Time",
+    value: 134,
+    delta: "Goal 120m",
+    icon: Clock,
+    format: (n) => `${Math.floor(n / 60)}h ${n % 60}m`,
+  },
 ];
 
 const recentDocs = [
@@ -41,20 +63,17 @@ const recentDocs = [
 ];
 
 const activity = [
-  { kind: "index", text: "Finished indexing notion-export-2026.zip", when: "3m" },
-  { kind: "chat", text: "Asked about CAP theorem trade-offs", when: "27m" },
-  { kind: "note", text: "Created note 'RAG retrieval tuning'", when: "1h" },
-  { kind: "watch", text: "Watching folder ~/Documents/Papers", when: "3h" },
-];
-
-const searches = [
-  "How does HNSW differ from IVF?",
-  "Best chunk size for technical PDFs",
-  "Summarize my notes on rust lifetimes",
-  "Compare GPT-4o vs Gemini 1.5 Pro latency",
+  { text: "Finished indexing notion-export-2026.zip", when: "3m" },
+  { text: "Asked about CAP theorem trade-offs", when: "27m" },
+  { text: "Created note 'RAG retrieval tuning'", when: "1h" },
+  { text: "Watching folder ~/Documents/Papers", when: "3h" },
 ];
 
 function Dashboard() {
+  const navigate = useNavigate();
+  const [uploadOpen, setUploadOpen] = useState(false);
+  const [folderOpen, setFolderOpen] = useState(false);
+
   return (
     <div className="mx-auto w-full max-w-7xl space-y-8 px-4 py-8 md:px-8">
       <PageHeader
@@ -62,10 +81,10 @@ function Dashboard() {
         description="Your learning copilot is ready. Here's what's happening across your workspace."
         actions={
           <>
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" onClick={() => navigate({ to: "/knowledge" })}>
               <Search className="size-4" /> Quick search
             </Button>
-            <Button size="sm">
+            <Button size="sm" onClick={() => navigate({ to: "/chat" })}>
               <Sparkles className="size-4" /> Ask Copilot
             </Button>
           </>
@@ -80,14 +99,17 @@ function Dashboard() {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.04, duration: 0.3 }}
+            whileHover={{ y: -2 }}
           >
-            <Card className="group transition-colors hover:border-foreground/20">
+            <Card className="group cursor-pointer border-border/80 transition-all duration-200 hover:border-foreground/20 hover:shadow-lg hover:shadow-black/20">
               <CardContent className="p-5">
                 <div className="flex items-center justify-between">
                   <span className="text-xs text-muted-foreground">{s.label}</span>
-                  <s.icon className="size-4 text-muted-foreground" />
+                  <s.icon className="size-4 text-muted-foreground transition-colors group-hover:text-foreground" />
                 </div>
-                <div className="mt-3 text-2xl font-semibold tracking-tight">{s.value}</div>
+                <div className="mt-3 text-2xl font-semibold tracking-tight tabular-nums">
+                  <AnimatedCounter value={s.value} format={s.format} />
+                </div>
                 <div className="mt-1 flex items-center gap-1 text-xs text-success">
                   <TrendingUp className="size-3" />
                   {s.delta}
@@ -101,40 +123,50 @@ function Dashboard() {
       {/* Quick actions */}
       <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
         {[
-          { icon: Upload, label: "Upload Document", hint: "PDF, MD, DOCX" },
-          { icon: FolderPlus, label: "Add Folder", hint: "Watch local path" },
-          { icon: NotebookPen, label: "Create Note", hint: "Markdown" },
-          { icon: Sparkles, label: "Ask AI", hint: "Use your library" },
+          { icon: Upload, label: "Upload Document", hint: "PDF, MD, DOCX", onClick: () => setUploadOpen(true) },
+          { icon: FolderPlus, label: "Add Folder", hint: "Watch local path", onClick: () => setFolderOpen(true) },
+          { icon: NotebookPen, label: "Create Note", hint: "Markdown", onClick: () => navigate({ to: "/notes" }) },
+          { icon: Sparkles, label: "Ask AI", hint: "Use your library", onClick: () => navigate({ to: "/chat" }) },
         ].map((a) => (
-          <button
+          <motion.button
             key={a.label}
-            className="group relative flex items-center gap-3 rounded-xl border border-border bg-card p-4 text-left transition-all hover:-translate-y-0.5 hover:border-foreground/20"
+            onClick={a.onClick}
+            whileHover={{ y: -2 }}
+            whileTap={{ scale: 0.98 }}
+            transition={{ type: "spring", stiffness: 400, damping: 25 }}
+            className="group relative flex items-center gap-3 rounded-xl border border-border bg-card p-4 text-left transition-colors hover:border-foreground/20 hover:bg-card/80"
           >
-            <div className="grid size-9 place-items-center rounded-lg bg-muted text-foreground">
+            <div className="grid size-9 place-items-center rounded-lg bg-muted text-foreground transition-colors group-hover:bg-accent/15 group-hover:text-accent">
               <a.icon className="size-4" />
             </div>
             <div className="min-w-0">
               <div className="text-sm font-medium">{a.label}</div>
               <div className="truncate text-xs text-muted-foreground">{a.hint}</div>
             </div>
-            <ArrowUpRight className="ml-auto size-4 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
-          </button>
+            <ArrowUpRight className="ml-auto size-4 text-muted-foreground opacity-0 transition-all group-hover:translate-x-0.5 group-hover:opacity-100" />
+          </motion.button>
         ))}
       </div>
 
       <div className="grid grid-cols-1 gap-3 lg:grid-cols-3">
-        <Card className="lg:col-span-2">
+        <Card className="lg:col-span-2 transition-shadow hover:shadow-lg hover:shadow-black/10">
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle className="text-base">Recent documents</CardTitle>
-            <Button variant="ghost" size="sm" className="text-xs text-muted-foreground">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-xs text-muted-foreground"
+              onClick={() => navigate({ to: "/knowledge" })}
+            >
               View all
             </Button>
           </CardHeader>
           <CardContent className="divide-y divide-border p-0">
             {recentDocs.map((d) => (
-              <div
+              <button
                 key={d.name}
-                className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-6 py-3.5 hover:bg-muted/40"
+                onClick={() => toast(d.name, { description: `${d.size} · ${d.chunks} chunks` })}
+                className="grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-6 py-3.5 text-left transition-colors hover:bg-muted/40"
               >
                 <div className="flex min-w-0 items-center gap-3">
                   <div className="grid size-8 shrink-0 place-items-center rounded-md bg-muted">
@@ -148,48 +180,42 @@ function Dashboard() {
                   </div>
                 </div>
                 <span className="shrink-0 text-xs text-muted-foreground">{d.when}</span>
-              </div>
+              </button>
             ))}
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="transition-shadow hover:shadow-lg hover:shadow-black/10">
           <CardHeader>
-            <CardTitle className="text-base">Today</CardTitle>
+            <CardTitle className="text-base">Learning time</CardTitle>
           </CardHeader>
           <CardContent className="space-y-5">
-            <div>
-              <div className="flex items-baseline justify-between">
-                <span className="text-xs text-muted-foreground">Learning time</span>
-                <Clock className="size-3.5 text-muted-foreground" />
+            <div className="grid grid-cols-2 gap-3">
+              <div className="rounded-lg border border-border bg-surface/40 p-3">
+                <div className="text-[11px] uppercase tracking-wider text-muted-foreground">Today</div>
+                <div className="mt-1 text-xl font-semibold tracking-tight tabular-nums">
+                  <AnimatedCounter value={134} format={(n) => `${Math.floor(n / 60)}h ${n % 60}m`} />
+                </div>
               </div>
-              <div className="mt-1 text-2xl font-semibold tracking-tight">2h 14m</div>
-              <div className="mt-3 grid grid-cols-12 gap-1">
-                {Array.from({ length: 12 }).map((_, i) => {
-                  const h = [10, 30, 60, 40, 80, 50, 70, 20, 90, 60, 35, 55][i];
-                  return (
-                    <div
-                      key={i}
-                      className="rounded-sm bg-accent/60"
-                      style={{ height: `${h * 0.5 + 8}px` }}
-                    />
-                  );
-                })}
+              <div className="rounded-lg border border-border bg-surface/40 p-3">
+                <div className="text-[11px] uppercase tracking-wider text-muted-foreground">This week</div>
+                <div className="mt-1 text-xl font-semibold tracking-tight tabular-nums">
+                  <AnimatedCounter value={862} format={(n) => `${Math.floor(n / 60)}h ${n % 60}m`} />
+                </div>
               </div>
             </div>
-
             <div>
-              <div className="mb-2 text-xs text-muted-foreground">Recent searches</div>
-              <div className="space-y-1.5">
-                {searches.map((s) => (
-                  <div
-                    key={s}
-                    className="flex items-center gap-2 rounded-md px-2 py-1.5 text-xs hover:bg-muted/60"
-                  >
-                    <Search className="size-3 text-muted-foreground" />
-                    <span className="truncate">{s}</span>
-                  </div>
-                ))}
+              <div className="mb-2 flex items-center justify-between text-xs">
+                <span className="text-muted-foreground">Weekly goal</span>
+                <span className="text-muted-foreground tabular-nums">14h 22m / 20h</span>
+              </div>
+              <div className="h-1.5 overflow-hidden rounded-full bg-muted">
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: "72%" }}
+                  transition={{ duration: 1.1, ease: "easeOut" }}
+                  className="h-full rounded-full bg-accent"
+                />
               </div>
             </div>
           </CardContent>
@@ -197,19 +223,29 @@ function Dashboard() {
       </div>
 
       <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
-        <Card>
-          <CardHeader>
+        <Card className="transition-shadow hover:shadow-lg hover:shadow-black/10">
+          <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle className="text-base">Recent notes</CardTitle>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-xs text-muted-foreground"
+              onClick={() => navigate({ to: "/notes" })}
+            >
+              Open notes
+            </Button>
           </CardHeader>
-          <CardContent className="space-y-3">
+          <CardContent className="space-y-2">
             {[
               { t: "RAG retrieval tuning", tag: "AI" },
               { t: "Weekly review — week 26", tag: "Personal" },
               { t: "Postgres index strategy", tag: "DB" },
             ].map((n) => (
-              <div
+              <motion.button
                 key={n.t}
-                className="flex items-center justify-between rounded-lg border border-border bg-surface/40 p-3 hover:border-foreground/20"
+                whileHover={{ x: 2 }}
+                onClick={() => navigate({ to: "/notes" })}
+                className="flex w-full items-center justify-between rounded-lg border border-border bg-surface/40 p-3 text-left transition-colors hover:border-foreground/20 hover:bg-surface/70"
               >
                 <div className="flex items-center gap-3">
                   <div className="size-1.5 rounded-full bg-accent" />
@@ -218,14 +254,16 @@ function Dashboard() {
                 <Badge variant="secondary" className="text-[10px]">
                   {n.tag}
                 </Badge>
-              </div>
+              </motion.button>
             ))}
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="transition-shadow hover:shadow-lg hover:shadow-black/10">
           <CardHeader>
-            <CardTitle className="text-base">Activity</CardTitle>
+            <CardTitle className="flex items-center gap-2 text-base">
+              <Activity className="size-4" /> Recent activity
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <ol className="relative space-y-4 pl-5">
@@ -243,6 +281,77 @@ function Dashboard() {
           </CardContent>
         </Card>
       </div>
+
+      <div>
+        <div className="mb-3 flex items-baseline gap-2">
+          <h2 className="text-sm font-medium">Insights</h2>
+          <span className="text-xs text-muted-foreground">Coming soon to your dashboard</span>
+        </div>
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
+          <ComingSoonCard
+            icon={TrendingUp}
+            title="Learning analytics"
+            description="Weekly trends, streaks, and a GitHub-style heatmap of your study sessions."
+          />
+          <ComingSoonCard
+            icon={Sparkles}
+            title="AI recommendations"
+            description="Personalised topic suggestions and resources based on your knowledge base."
+          />
+          <ComingSoonCard
+            icon={Activity}
+            title="Smart goals"
+            description="Predicted weak topics and goal tracking driven by your retention signal."
+          />
+        </div>
+      </div>
+
+      <UploadDialog open={uploadOpen} onOpenChange={setUploadOpen} />
+      <AddFolderDialog open={folderOpen} onOpenChange={setFolderOpen} />
     </div>
+  );
+}
+
+function AddFolderDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (v: boolean) => void }) {
+  const [path, setPath] = useState("~/Documents/Knowledge");
+  const [watch, setWatch] = useState(true);
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle>Add folder</DialogTitle>
+          <DialogDescription>
+            Watch a local folder. New files are ingested automatically.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="space-y-4">
+          <div>
+            <Label className="text-xs text-muted-foreground">Folder path</Label>
+            <Input value={path} onChange={(e) => setPath(e.target.value)} className="mt-1.5 font-mono text-xs" />
+          </div>
+          <div className="flex items-center justify-between rounded-lg border border-border bg-surface/40 p-3">
+            <div>
+              <div className="text-sm font-medium">Watch for changes</div>
+              <div className="text-xs text-muted-foreground">Auto-sync new and updated files</div>
+            </div>
+            <Switch checked={watch} onCheckedChange={setWatch} />
+          </div>
+        </div>
+        <DialogFooter>
+          <Button variant="ghost" onClick={() => onOpenChange(false)}>
+            Cancel
+          </Button>
+          <Button
+            onClick={() => {
+              toast.success("Folder added", { description: path });
+              onOpenChange(false);
+            }}
+          >
+            Add folder
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }
