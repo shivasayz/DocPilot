@@ -32,6 +32,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
+import { useAuth } from "@/lib/auth";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -60,15 +61,25 @@ const recentDocs = [
   { name: "Personal — Weekly Review Template.md", size: "12 KB", chunks: 6, when: "2d ago" },
 ];
 
+function getGreeting(): string {
+  const hour = new Date().getHours();
+  if (hour < 12) return "Good morning";
+  if (hour < 17) return "Good afternoon";
+  return "Good evening";
+}
+
 function Dashboard() {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [uploadOpen, setUploadOpen] = useState(false);
   const [folderOpen, setFolderOpen] = useState(false);
+
+  const firstName = user?.name?.split(" ")[0] ?? "there";
 
   return (
     <div className="mx-auto w-full max-w-7xl space-y-8 px-4 py-8 md:px-8">
       <PageHeader
-        title="Good afternoon, Alex"
+        title={`${getGreeting()}, ${firstName}`}
         description="Your learning copilot is ready. Here's what's happening across your workspace."
         actions={
           <>

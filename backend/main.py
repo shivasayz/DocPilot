@@ -1,28 +1,43 @@
-from core.auth import auth_route
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from db.connection import connect_db, close_db
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    await connect_db()
+    yield
+    await close_db()
+
 
 app = FastAPI(
-    title="Knowledge Copilot API",
+    title="AI-Project API",
     version="1.0.0",
-    description=(
-        "Backend API for Knowledge Copilot, an AI-powered personal learning assistant "
-        "that enables Retrieval-Augmented Generation (RAG), document ingestion, "
-        "knowledge management, intelligent search, note-taking, and AI-assisted learning."
-    ),
+    description="API for AI-Project",
     openapi_url="/api/v1/openapi.json",
-    docs_url="/api/v1/docs"
+    docs_url="/api/v1/docs",
+    lifespan=lifespan,
 )
+
+# CORS - must be before routes
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Import routes after app is created
+from core.auth import auth_route
 
 @app.get("/health")
 def get_health():
-    return {"status": "healthy"}
-
-@app.get("/")
-def read_root():
-    return {"Message": "ok!"}
+    return {"message": "Server is running"}
 
 app.include_router(
     auth_route,
-    prefix="/api/auth",
+    prefix="/auth",
     tags=["Authentication"]
 )
