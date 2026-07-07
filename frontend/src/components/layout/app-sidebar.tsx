@@ -50,14 +50,14 @@ function NavItem({ to, label, icon: Icon, collapsed, active }: {
         <motion.span
           layoutId="sidebar-indicator"
           transition={{ type: "spring", stiffness: 400, damping: 30 }}
-          className="absolute left-0 inset-y-1 w-[3px] rounded-full bg-accent"
+          className="absolute left-0 inset-y-1.5 w-[3px] rounded-full bg-accent"
         />
       )}
       {active && (
         <motion.span
           layoutId="sidebar-bg"
           transition={{ type: "spring", stiffness: 400, damping: 30 }}
-          className="absolute inset-0 rounded-md bg-accent/10 ring-1 ring-accent/20"
+          className="absolute inset-0 rounded-md bg-accent/10"
         />
       )}
       <Icon className={cn("relative size-4 shrink-0", active ? "opacity-100" : "opacity-80")} />

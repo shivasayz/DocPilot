@@ -69,6 +69,7 @@ export function SignupPage() {
   const [errors, setErrors] = useState<{ name?: string; email?: string; password?: string }>({});
 
   // Step 2
+  const [gender, setGender] = useState("");
   const [occupation, setOccupation] = useState("");
   const [organization, setOrganization] = useState("");
   const [heardFrom, setHeardFrom] = useState("");
@@ -106,6 +107,7 @@ export function SignupPage() {
     try {
       const [result] = await Promise.all([
         signup(name, email, password, {
+          gender: gender || undefined,
           occupation: occupation || undefined,
           organization: organization || undefined,
           heard_from: heardFrom || undefined,
@@ -272,6 +274,18 @@ export function SignupPage() {
                   onSubmit={handleSubmit}
                   className="mt-6 space-y-4"
                 >
+                <div className="space-y-1.5">
+                  <Label>Gender</Label>
+                  <Select value={gender} onValueChange={setGender}>
+                    <SelectTrigger><SelectValue placeholder="Select gender" /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="male">Male</SelectItem>
+                      <SelectItem value="female">Female</SelectItem>
+                      <SelectItem value="other">Other</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
                 <div className="space-y-1.5">
                   <Label>What do you do?</Label>
                   <Select value={occupation} onValueChange={setOccupation}>

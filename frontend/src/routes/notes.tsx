@@ -1,95 +1,54 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
 import {
   Plus,
   Search,
   Pin,
   Star,
-  Hash,
   Folder,
   Bold,
   Italic,
-  Code,
   Heading1,
-  Heading2,
   List,
-  Link as LinkIcon,
   MoreHorizontal,
-  Quote,
   Trash2,
   Check,
   Loader2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { ConfirmDelete } from "@/components/shared/confirm-delete";
+import { MarkdownEditor } from "@/components/shared/markdown-editor";
 import { toast } from "sonner";
+import { api } from "@/lib/api";
+import { useAuth } from "@/lib/auth";
+import type { Editor } from "@/components/shared/markdown-editor";
 
 export const Route = createFileRoute("/notes")({
   head: () => ({ meta: [{ title: "Notes — Copilot" }] }),
   component: NotesPage,
 });
 
+type NoteAPI = {
+  id: string;
+  title: string;
+  content: string;
+  pinned: boolean;
+  favorite: boolean;
+  user_id: string;
+  created_at: string;
+  updated_at: string;
+};
+
 type Note = {
   id: string;
   title: string;
   body: string;
-  tag: string;
-  date: string;
   pinned?: boolean;
   favorite?: boolean;
+  created_at: string;
+  updated_at: string;
 };
-
-const initialNotes: Note[] = [
-  {
-    id: "1",
-    title: "RAG retrieval tuning",
-    tag: "ai",
-    date: "Today",
-    pinned: true,
-    body: `After running retrieval evaluations across 200 questions, the sweet spot for technical PDFs sits around **chunk size 800 tokens** with **150 token overlap**.
-
-## Findings
-
-- Smaller chunks hurt recall on multi-paragraph reasoning.
-- Larger chunks dilute the embedding signal.
-- MMR diversity 0.4 reduced repetition in long contexts.
-
-\`\`\`
-retriever = MMR(top_k=8, diversity=0.4, embed_model="text-embedding-3-large")
-\`\`\`
-`,
-  },
-  {
-    id: "2",
-    title: "Weekly review — week 26",
-    tag: "review",
-    date: "Yesterday",
-    body: "Shipped the knowledge sources page. Started on the ingest pipeline visualisation.",
-  },
-  {
-    id: "3",
-    title: "Transformer attention notes",
-    tag: "papers",
-    date: "Mon",
-    body: "Q·Kᵀ / √d_k scales dot products to prevent softmax saturation when d_k is large.",
-  },
-  {
-    id: "4",
-    title: "Postgres index strategy",
-    tag: "infra",
-    date: "May 18",
-    body: "B-tree for equality and range; GIN for JSONB and tsvector.",
-  },
-  {
-    id: "5",
-    title: "Rust lifetimes refresher",
-    tag: "rust",
-    date: "May 12",
-    body: "Borrow checker rules: one mutable XOR many immutable refs.",
-  },
-];
 
 const folders = [
   { key: "all", name: "All notes", icon: Folder },
@@ -97,29 +56,64 @@ const folders = [
   { key: "favorites", name: "Favorites", icon: Star },
 ];
 
-const tags = ["ai", "rust", "design", "review", "papers", "infra"];
+function toNote(n: NoteAPI): Note {
+  return { id: n.id, title: n.title, body: n.content, pinned: n.pinned, favorite: n.favorite, created_at: n.created_at, updated_at: n.updated_at };
+}
+
+function stripMarkdown(md: string): string {
+  return md
+    .replace(/#{1,6}\s?/g, "")
+    .replace(/\*\*(.*?)\*\*/g, "$1")
+    .replace(/\*(.*?)\*/g, "$1")
+    .replace(/`(.*?)`/g, "$1")
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+    .replace(/^[\s]*[-*+]\s/gm, "")
+    .replace(/^>\s?/gm, "")
+    .replace(/\n{2,}/g, " ")
+    .trim();
+}
 
 function NotesPage() {
-  const [notes, setNotes] = useState<Note[]>(initialNotes);
+  const [notes, setNotes] = useState<Note[]>([]);
+  const [loading, setLoading] = useState(true);
   const [folder, setFolder] = useState("all");
-  const [tag, setTag] = useState<string | null>(null);
   const [query, setQuery] = useState("");
-  const [activeId, setActiveId] = useState(initialNotes[0].id);
+  const [activeId, setActiveId] = useState<string | null>(null);
   const [toDelete, setToDelete] = useState<Note | null>(null);
   const [saveState, setSaveState] = useState<"idle" | "saving" | "saved">("saved");
   const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const filtered = useMemo(() => {
-    return notes.filter((n) => {
-      if (folder === "pinned" && !n.pinned) return false;
-      if (folder === "favorites" && !n.favorite) return false;
-      if (tag && n.tag !== tag) return false;
-      if (query && !`${n.title} ${n.body}`.toLowerCase().includes(query.toLowerCase())) return false;
-      return true;
-    });
-  }, [notes, folder, tag, query]);
+  const { getToken } = useAuth();
+  const token = getToken() ?? "";
 
-  const active = notes.find((n) => n.id === activeId) ?? filtered[0];
+  const fetchNotes = useCallback(async () => {
+    if (!token) { setLoading(false); return; }
+    try {
+      const data = await api<NoteAPI[]>("/notes/", { token });
+      const mapped = data.map(toNote);
+      setNotes(mapped);
+      if (mapped.length > 0 && !activeId) setActiveId(mapped[0].id);
+    } catch (e: any) {
+      toast.error(e.message || "Failed to load notes");
+    } finally {
+      setLoading(false);
+    }
+  }, [token]);
+
+  useEffect(() => { fetchNotes(); }, [fetchNotes]);
+
+  const filtered = useMemo(() => {
+    return notes
+      .filter((n) => {
+        if (folder === "pinned" && !n.pinned) return false;
+        if (folder === "favorites" && !n.favorite) return false;
+        if (query && !`${n.title} ${n.body}`.toLowerCase().includes(query.toLowerCase())) return false;
+        return true;
+      })
+      .sort((a, b) => (a.pinned === b.pinned ? 0 : a.pinned ? -1 : 1));
+  }, [notes, folder, query]);
+
+  const active = notes.find((n) => n.id === activeId) ?? filtered[0] ?? null;
 
   useEffect(() => {
     if (active && !filtered.find((n) => n.id === active.id) && filtered[0]) {
@@ -129,45 +123,66 @@ function NotesPage() {
 
   const updateActive = (patch: Partial<Note>) => {
     if (!active) return;
-    setNotes((arr) => arr.map((n) => (n.id === active.id ? { ...n, ...patch } : n)));
+    const updated = { ...active, ...patch };
+    setNotes((arr) => arr.map((n) => (n.id === active.id ? updated : n)));
     setSaveState("saving");
     if (saveTimer.current) clearTimeout(saveTimer.current);
-    saveTimer.current = setTimeout(() => setSaveState("saved"), 600);
+    saveTimer.current = setTimeout(async () => {
+      try {
+        const body: Record<string, unknown> = {};
+        if (patch.title !== undefined) body.title = patch.title;
+        if (patch.body !== undefined) body.content = patch.body;
+        if (patch.pinned !== undefined) body.pinned = patch.pinned;
+        if (patch.favorite !== undefined) body.favorite = patch.favorite;
+        if (Object.keys(body).length > 0) {
+          await api(`/notes/${active.id}`, { method: "PATCH", body, token });
+        }
+        setSaveState("saved");
+      } catch {
+        setSaveState("idle");
+      }
+    }, 800);
   };
 
-  const createNote = () => {
-    const n: Note = {
-      id: crypto.randomUUID(),
-      title: "Untitled note",
-      body: "",
-      tag: tag ?? "ai",
-      date: "Now",
-    };
-    setNotes((arr) => [n, ...arr]);
-    setActiveId(n.id);
-    toast.success("Note created");
+  const createNote = async () => {
+    try {
+      const data = await api<NoteAPI>("/notes/", {
+        method: "POST",
+        body: { title: "Untitled note", content: "" },
+        token,
+      });
+      const n = toNote(data);
+      setNotes((arr) => [n, ...arr]);
+      setActiveId(n.id);
+      toast.success("Note created");
+    } catch (e: any) {
+      toast.error(e.message || "Failed to create note");
+    }
+  };
+
+  const deleteNote = async (note: Note) => {
+    try {
+      await api(`/notes/${note.id}`, { method: "DELETE", token });
+      setNotes((arr) => arr.filter((n) => n.id !== note.id));
+      toast.success("Note deleted");
+      setToDelete(null);
+    } catch (e: any) {
+      toast.error(e.message || "Failed to delete note");
+    }
   };
 
   const words = active ? active.body.trim().split(/\s+/).filter(Boolean).length : 0;
   const reading = Math.max(1, Math.round(words / 200));
 
-  // toolbar action: wrap selection in markdown syntax
-  const editorRef = useRef<HTMLTextAreaElement>(null);
-  const wrap = (before: string, after = before) => {
-    const ta = editorRef.current;
-    if (!ta || !active) return;
-    const start = ta.selectionStart;
-    const end = ta.selectionEnd;
-    const value = active.body;
-    const sel = value.slice(start, end) || "text";
-    const next = value.slice(0, start) + before + sel + after + value.slice(end);
-    updateActive({ body: next });
-    requestAnimationFrame(() => {
-      ta.focus();
-      ta.selectionStart = start + before.length;
-      ta.selectionEnd = start + before.length + sel.length;
-    });
-  };
+  const editorRef = useRef<Editor | null>(null);
+
+  if (loading) {
+    return (
+      <div className="grid h-[calc(100vh-3.5rem)] place-items-center">
+        <Loader2 className="size-6 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
 
   return (
     <div className="grid h-[calc(100vh-3.5rem)] grid-cols-1 lg:grid-cols-[240px_320px_minmax(0,1fr)]">
@@ -188,14 +203,11 @@ function NotesPage() {
               const count = notes.filter((n) =>
                 f.key === "all" ? true : f.key === "pinned" ? n.pinned : n.favorite,
               ).length;
-              const isActive = folder === f.key && !tag;
+              const isActive = folder === f.key;
               return (
                 <button
                   key={f.key}
-                  onClick={() => {
-                    setFolder(f.key);
-                    setTag(null);
-                  }}
+                  onClick={() => setFolder(f.key)}
                   className={`relative flex w-full items-center justify-between rounded-md px-2.5 py-1.5 text-sm transition-colors ${
                     isActive
                       ? "text-foreground"
@@ -206,14 +218,14 @@ function NotesPage() {
                     <motion.span
                       layoutId="notes-folder-indicator"
                       transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                      className="absolute left-0 inset-y-1 w-[3px] rounded-full bg-accent"
+                      className="absolute left-0 inset-y-1.5 w-[3px] rounded-full bg-accent"
                     />
                   )}
                   {isActive && (
                     <motion.span
                       layoutId="notes-folder-active"
                       transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                      className="absolute inset-0 rounded-md bg-accent/10 ring-1 ring-accent/20"
+                      className="absolute inset-0 rounded-md bg-accent/10"
                     />
                   )}
                   <span className="relative flex items-center gap-2">
@@ -225,23 +237,6 @@ function NotesPage() {
               );
             })}
           </LayoutGroup>
-          <div className="mt-5 px-2.5 pb-1 text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
-            Tags
-          </div>
-          <div className="flex flex-wrap gap-1 px-2">
-            {tags.map((t) => (
-              <button
-                key={t}
-                onClick={() => setTag(tag === t ? null : t)}
-                className={`flex items-center gap-1 rounded-md px-2 py-0.5 text-[11px] transition-colors ${
-                  tag === t ? "bg-accent/20 text-accent" : "bg-muted/60 text-muted-foreground hover:bg-muted"
-                }`}
-              >
-                <Hash className="size-2.5" />
-                {t}
-              </button>
-            ))}
-          </div>
         </div>
       </aside>
 
@@ -287,7 +282,7 @@ function NotesPage() {
                     <motion.span
                       layoutId="notes-list-active"
                       transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                      className="absolute inset-0 bg-accent/8"
+                      className="absolute inset-x-1 inset-y-1 rounded-md bg-accent/10"
                     />
                   )}
                   <div className="relative">
@@ -295,10 +290,11 @@ function NotesPage() {
                       <span className="line-clamp-1 text-sm font-medium">{n.title}</span>
                       {n.pinned && <Pin className="size-3 text-accent" />}
                     </div>
-                    <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">{n.body || "Empty note"}</p>
+                    <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">{stripMarkdown(n.body) || "Empty note"}</p>
                     <div className="mt-2 flex items-center justify-between">
-                      <Badge variant="secondary" className="text-[10px]">#{n.tag}</Badge>
-                      <span className="text-[11px] text-muted-foreground">{n.date}</span>
+                      <span className="text-[11px] text-muted-foreground">
+                        {new Date(n.updated_at).toLocaleDateString()}
+                      </span>
                     </div>
                   </div>
                 </motion.button>
@@ -314,14 +310,10 @@ function NotesPage() {
           <>
             <div className="flex items-center justify-between border-b border-border px-4 py-2 md:px-6">
               <div className="flex items-center gap-0.5">
-                <ToolBtn title="Heading 1" onClick={() => wrap("\n# ", "")}><Heading1 className="size-3.5" /></ToolBtn>
-                <ToolBtn title="Heading 2" onClick={() => wrap("\n## ", "")}><Heading2 className="size-3.5" /></ToolBtn>
-                <ToolBtn title="Bold" onClick={() => wrap("**")}><Bold className="size-3.5" /></ToolBtn>
-                <ToolBtn title="Italic" onClick={() => wrap("*")}><Italic className="size-3.5" /></ToolBtn>
-                <ToolBtn title="List" onClick={() => wrap("\n- ", "")}><List className="size-3.5" /></ToolBtn>
-                <ToolBtn title="Quote" onClick={() => wrap("\n> ", "")}><Quote className="size-3.5" /></ToolBtn>
-                <ToolBtn title="Code" onClick={() => wrap("`")}><Code className="size-3.5" /></ToolBtn>
-                <ToolBtn title="Link" onClick={() => wrap("[", "](url)")}><LinkIcon className="size-3.5" /></ToolBtn>
+                <ToolBtn title="Heading" onClick={() => editorRef.current?.chain().focus().toggleHeading({ level: 1 }).run()}><Heading1 className="size-3.5" /></ToolBtn>
+                <ToolBtn title="Bold" onClick={() => editorRef.current?.chain().focus().toggleBold().run()}><Bold className="size-3.5" /></ToolBtn>
+                <ToolBtn title="Italic" onClick={() => editorRef.current?.chain().focus().toggleItalic().run()}><Italic className="size-3.5" /></ToolBtn>
+                <ToolBtn title="List" onClick={() => editorRef.current?.chain().focus().toggleBulletList().run()}><List className="size-3.5" /></ToolBtn>
               </div>
               <div className="flex items-center gap-1">
                 <SaveIndicator state={saveState} />
@@ -364,21 +356,21 @@ function NotesPage() {
                   placeholder="Untitled"
                 />
                 <div className="mt-2 flex items-center gap-2 text-xs text-muted-foreground">
-                  <span>{active.date}</span>
+                  <span>{new Date(active.updated_at).toLocaleDateString()}</span>
                   <span>·</span>
                   <span className="tabular-nums">{words} words</span>
                   <span>·</span>
                   <span>{reading} min read</span>
-                  <Badge variant="secondary" className="ml-1 text-[10px]">#{active.tag}</Badge>
                 </div>
 
-                <textarea
-                  ref={editorRef}
-                  value={active.body}
-                  onChange={(e) => updateActive({ body: e.target.value })}
-                  placeholder="Start writing… Markdown supported."
-                  className="mt-8 min-h-[60vh] w-full resize-none bg-transparent font-mono text-sm leading-relaxed text-foreground/90 outline-none placeholder:text-muted-foreground"
-                />
+                <div className="mt-8">
+                  <MarkdownEditor
+                    noteId={active.id}
+                    initialContent={active.body}
+                    onChange={(md) => updateActive({ body: md })}
+                    editorRef={editorRef}
+                  />
+                </div>
               </div>
             </div>
           </>
@@ -397,13 +389,7 @@ function NotesPage() {
       <ConfirmDelete
         open={!!toDelete}
         onOpenChange={(v) => !v && setToDelete(null)}
-        onConfirm={() => {
-          if (toDelete) {
-            setNotes((arr) => arr.filter((n) => n.id !== toDelete.id));
-            toast.success("Note deleted");
-            setToDelete(null);
-          }
-        }}
+        onConfirm={() => { if (toDelete) deleteNote(toDelete); }}
         title="Delete note?"
         description={toDelete ? `"${toDelete.title}" will be permanently removed.` : ""}
       />

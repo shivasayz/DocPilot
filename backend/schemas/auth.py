@@ -6,6 +6,7 @@ class SignupRequest(BaseModel):
     name: str
     email: EmailStr
     password: str
+    gender: Optional[str] = None
     occupation: Optional[str] = None
     organization: Optional[str] = None
     heard_from: Optional[str] = None
@@ -26,6 +27,7 @@ class UserResponse(BaseModel):
     id: str
     name: str
     email: str
+    gender: Optional[str] = None
     occupation: Optional[str] = None
     organization: Optional[str] = None
     heard_from: Optional[str] = None
@@ -34,6 +36,7 @@ class UserResponse(BaseModel):
 
 class UpdateProfileRequest(BaseModel):
     name: Optional[str] = None
+    gender: Optional[str] = None
     occupation: Optional[str] = None
     organization: Optional[str] = None
     use_case: Optional[str] = None

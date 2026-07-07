@@ -31,6 +31,7 @@ app.add_middleware(
 
 # Import routes after app is created
 from core.auth import auth_route
+from routes.notes import notes_route
 
 @app.get("/health")
 def get_health():
@@ -40,4 +41,10 @@ app.include_router(
     auth_route,
     prefix="/auth",
     tags=["Authentication"]
+)
+
+app.include_router(
+    notes_route,
+    prefix="/notes",
+    tags=["Notes"]
 )

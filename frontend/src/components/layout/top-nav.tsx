@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
-import { Search, Bell, Sun, Moon, Command } from "lucide-react";
+import { Search, Bell, Sun, Moon, Command, User, UserRound } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -12,23 +11,41 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/lib/auth";
+import { useTheme } from "@/lib/theme";
 import { toast } from "sonner";
 
+function GenderAvatar({ gender, initials }: { gender?: string; initials: string }) {
+  if (gender === "male") {
+    return (
+      <Avatar className="size-7">
+        <AvatarFallback className="bg-blue-500/15 text-blue-400 text-xs">
+          <User className="size-4" />
+        </AvatarFallback>
+      </Avatar>
+    );
+  }
+  if (gender === "female") {
+    return (
+      <Avatar className="size-7">
+        <AvatarFallback className="bg-pink-500/15 text-pink-400 text-xs">
+          <UserRound className="size-4" />
+        </AvatarFallback>
+      </Avatar>
+    );
+  }
+  return (
+    <Avatar className="size-7">
+      <AvatarFallback className="bg-accent text-accent-foreground text-xs">
+        {initials}
+      </AvatarFallback>
+    </Avatar>
+  );
+}
+
 export function TopNav() {
-  const [dark, setDark] = useState(false);
+  const { theme, setTheme } = useTheme();
   const navigate = useNavigate();
   const { user, logout } = useAuth();
-
-  useEffect(() => {
-    const root = document.documentElement;
-    if (dark) {
-      root.classList.remove("light");
-      root.classList.add("dark");
-    } else {
-      root.classList.remove("dark");
-      root.classList.add("light");
-    }
-  }, [dark]);
 
   const handleSignOut = () => {
     logout();
@@ -36,9 +53,9 @@ export function TopNav() {
     navigate({ to: "/login" });
   };
 
-  const displayName = user?.name ?? "Alex Morgan";
-  const displayEmail = user?.email ?? "alex@copilot.dev";
-  const initials = user?.avatar ?? "AM";
+  const displayName = user?.name ?? "User";
+  const displayEmail = user?.email ?? "";
+  const initials = user?.avatar ?? "?";
 
   return (
     <header className="sticky top-0 z-30 flex h-14 items-center gap-3 border-b border-border glass px-4 md:px-6">
@@ -58,10 +75,10 @@ export function TopNav() {
           variant="ghost"
           size="icon"
           className="size-9"
-          onClick={() => setDark((d) => !d)}
+          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
           aria-label="Toggle theme"
         >
-          {dark ? <Sun className="size-4" /> : <Moon className="size-4" />}
+          {theme === "dark" ? <Sun className="size-4" /> : <Moon className="size-4" />}
         </Button>
         <Button variant="ghost" size="icon" className="relative size-9" aria-label="Notifications">
           <Bell className="size-4" />
@@ -71,11 +88,7 @@ export function TopNav() {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button className="ml-1 flex items-center gap-2 rounded-md p-1 pr-2 hover:bg-muted">
-              <Avatar className="size-7">
-                <AvatarFallback className="bg-accent text-accent-foreground text-xs">
-                  {initials}
-                </AvatarFallback>
-              </Avatar>
+              <GenderAvatar gender={user?.gender} initials={initials} />
               <span className="hidden text-sm font-medium sm:inline">{displayName}</span>
             </button>
           </DropdownMenuTrigger>

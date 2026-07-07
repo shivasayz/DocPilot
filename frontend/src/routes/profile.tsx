@@ -6,8 +6,15 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { PageHeader } from "@/components/shared/page-header";
-import { LogOut, Loader2 } from "lucide-react";
+import { LogOut, Loader2, User, UserRound } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth, getToken } from "@/lib/auth";
 import { api } from "@/lib/api";
@@ -25,6 +32,7 @@ function ProfilePage() {
   const [form, setForm] = useState({
     name: user?.name ?? "",
     email: user?.email ?? "",
+    gender: "",
     occupation: "",
     organization: "",
     use_case: "",
@@ -38,6 +46,7 @@ function ProfilePage() {
       setForm({
         name: data.name ?? "",
         email: data.email ?? "",
+        gender: data.gender ?? "",
         occupation: data.occupation ?? "",
         organization: data.organization ?? "",
         use_case: data.use_case ?? "",
@@ -46,6 +55,7 @@ function ProfilePage() {
   }, []);
 
   const initials = user?.avatar ?? (form.name.split(" ").map((w) => w[0]).join("").toUpperCase().slice(0, 2) || "?");
+  const gender = form.gender || user?.gender;
 
   const handleSignOut = () => {
     logout();
@@ -63,6 +73,7 @@ function ProfilePage() {
         token,
         body: {
           name: form.name || undefined,
+          gender: form.gender || undefined,
           occupation: form.occupation || undefined,
           organization: form.organization || undefined,
           use_case: form.use_case || undefined,
@@ -91,7 +102,13 @@ function ProfilePage() {
       <Card>
         <CardContent className="flex flex-col items-start gap-6 p-6 sm:flex-row sm:items-center">
           <Avatar className="size-20">
-            <AvatarFallback className="bg-accent text-accent-foreground text-xl">{initials}</AvatarFallback>
+            {gender === "male" ? (
+              <AvatarFallback className="bg-blue-500/15 text-blue-400 text-2xl"><User className="size-8" /></AvatarFallback>
+            ) : gender === "female" ? (
+              <AvatarFallback className="bg-pink-500/15 text-pink-400 text-2xl"><UserRound className="size-8" /></AvatarFallback>
+            ) : (
+              <AvatarFallback className="bg-accent text-accent-foreground text-xl">{initials}</AvatarFallback>
+            )}
           </Avatar>
           <div className="flex-1">
             <h2 className="text-xl font-semibold tracking-tight">{form.name || "User"}</h2>
@@ -111,6 +128,17 @@ function ProfilePage() {
         <CardContent className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <Field label="Full name" value={form.name} onChange={(v) => setForm({ ...form, name: v })} />
           <Field label="Email" value={form.email} disabled />
+          <div>
+            <Label className="text-xs text-muted-foreground">Gender</Label>
+            <Select value={form.gender} onValueChange={(v) => setForm({ ...form, gender: v })}>
+              <SelectTrigger className="mt-1.5"><SelectValue placeholder="Select gender" /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="male">Male</SelectItem>
+                <SelectItem value="female">Female</SelectItem>
+                <SelectItem value="other">Other</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
           <Field label="Occupation" value={form.occupation} onChange={(v) => setForm({ ...form, occupation: v })} placeholder="e.g. Software Engineer" />
           <Field label="Organization" value={form.organization} onChange={(v) => setForm({ ...form, organization: v })} placeholder="Company or university" />
           <div className="sm:col-span-2">

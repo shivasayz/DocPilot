@@ -1,11 +1,13 @@
 import { useSyncExternalStore } from "react";
 import { api } from "./api";
+import { loadUserTheme } from "./theme";
 
 export type User = {
   id?: string;
   name: string;
   email: string;
   avatar: string;
+  gender?: string;
 };
 
 const USER_KEY = "copilot.auth.user";
@@ -50,7 +52,7 @@ export async function login(email: string, password: string): Promise<User> {
     body: { email, password },
   });
 
-  const userData = await api<{ id: string; name: string; email: string }>("/auth/me", {
+  const userData = await api<{ id: string; name: string; email: string; gender?: string }>("/auth/me", {
     token: access_token,
   });
 
@@ -58,10 +60,12 @@ export async function login(email: string, password: string): Promise<User> {
     id: userData.id,
     name: userData.name,
     email: userData.email,
+    gender: userData.gender ?? undefined,
     avatar: userData.name.split(" ").map((w) => w[0]).join("").toUpperCase().slice(0, 2),
   };
 
   setUser(user, access_token);
+  loadUserTheme();
   return user;
 }
 
@@ -69,7 +73,7 @@ export async function signup(
   name: string,
   email: string,
   password: string,
-  profile?: { occupation?: string; organization?: string; heard_from?: string; use_case?: string },
+  profile?: { gender?: string; occupation?: string; organization?: string; heard_from?: string; use_case?: string },
 ): Promise<User> {
   const { access_token } = await api<{ access_token: string }>("/auth/signup", {
     method: "POST",
@@ -79,10 +83,12 @@ export async function signup(
   const user: User = {
     name,
     email,
+    gender: profile?.gender,
     avatar: name.split(" ").map((w) => w[0]).join("").toUpperCase().slice(0, 2),
   };
 
   setUser(user, access_token);
+  loadUserTheme();
   return user;
 }
 

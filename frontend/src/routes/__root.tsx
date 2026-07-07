@@ -8,13 +8,15 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { AppSidebar } from "@/components/layout/app-sidebar";
 import { TopNav } from "@/components/layout/top-nav";
 import { Toaster } from "@/components/ui/sonner";
+import { getToken } from "@/lib/auth";
+import { initTheme } from "@/lib/theme";
 
 function NotFoundComponent() {
   return (
@@ -87,7 +89,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className="light">
+    <html lang="en">
       <head>
         <HeadContent />
       </head>
@@ -101,11 +103,29 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const router = useRouter();
   const isLogin = useMatch({ from: "/login", shouldThrow: false });
   const isSignup = useMatch({ from: "/signup", shouldThrow: false });
   const isForgot = useMatch({ from: "/forgot-password", shouldThrow: false });
 
-  if (isLogin || isSignup || isForgot) {
+  const isAuthPage = !!(isLogin || isSignup || isForgot);
+  const [ready, setReady] = useState(false);
+  const [authenticated, setAuthenticated] = useState(false);
+
+  useEffect(() => {
+    initTheme();
+    const token = getToken();
+    if (!isAuthPage && !token) {
+      router.navigate({ to: "/login" });
+    } else {
+      setAuthenticated(!!token);
+    }
+    setReady(true);
+  }, [isAuthPage, router]);
+
+  if (!ready) return null;
+
+  if (isAuthPage) {
     return (
       <QueryClientProvider client={queryClient}>
         <Outlet />
@@ -113,6 +133,8 @@ function RootComponent() {
       </QueryClientProvider>
     );
   }
+
+  if (!authenticated) return null;
 
   return (
     <QueryClientProvider client={queryClient}>
