@@ -20,7 +20,6 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-# CORS - must be before routes
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -29,22 +28,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Import routes after app is created
-from core.auth import auth_route
-from routes.notes import notes_route
+from api.auth import router as auth_router
+from api.notes import router as notes_router
+
 
 @app.get("/health")
 def get_health():
     return {"message": "Server is running"}
 
-app.include_router(
-    auth_route,
-    prefix="/auth",
-    tags=["Authentication"]
-)
 
-app.include_router(
-    notes_route,
-    prefix="/notes",
-    tags=["Notes"]
-)
+app.include_router(auth_router, prefix="/auth", tags=["Authentication"])
+app.include_router(notes_router, prefix="/notes", tags=["Notes"])
