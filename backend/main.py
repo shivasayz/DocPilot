@@ -30,6 +30,7 @@ app.add_middleware(
 
 from api.auth import router as auth_router
 from api.notes import router as notes_router
+from api.upload_knowledge_source import router as knowledge_source_router
 
 
 @app.get("/health")
@@ -39,3 +40,5 @@ def get_health():
 
 app.include_router(auth_router, prefix="/auth", tags=["Authentication"])
 app.include_router(notes_router, prefix="/notes", tags=["Notes"])
+app.include_router(knowledge_source_router, prefix="/knowledge-source", tags=["Knowledge Source"])
+
