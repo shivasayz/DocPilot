@@ -11,6 +11,8 @@ knowledge_sources = db["knowledge_sources"]
 MIME_MAP = {
     ".pdf": "application/pdf",
     ".csv": "text/csv",
+    ".xls": "application/vnd.ms-excel",
+    ".xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     ".doc": "application/msword",
     ".docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
     ".txt": "text/plain",
@@ -20,7 +22,7 @@ MIME_MAP = {
 
 async def upload_file(file: UploadFile, user_id: str, ext: str):
     source_id = str(ObjectId())
-    dir_path = os.path.join(STORAGE_DIR, user_id, source_id)
+    dir_path = os.path.join(STORAGE_DIR, user_id)
     os.makedirs(dir_path, exist_ok=True)
 
     file_path = os.path.join(dir_path, file.filename)

@@ -5,7 +5,7 @@ from core.jwt import get_current_user
 
 router = APIRouter()
 
-ACCEPTED_EXTENSIONS = {".pdf", ".csv", ".doc", ".docx", ".txt", ".md"}
+ACCEPTED_EXTENSIONS = {".pdf", ".csv", ".xls", ".xlsx", ".doc", ".docx", ".txt", ".md"}
 
 
 @router.get("/check")
