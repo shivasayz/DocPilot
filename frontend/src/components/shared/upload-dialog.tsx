@@ -68,9 +68,16 @@ export function UploadDialog({
         </DialogHeader>
 
         <label
-          onDragOver={(e) => { e.preventDefault(); setDrag(true); }}
+          onDragOver={(e) => {
+            e.preventDefault();
+            setDrag(true);
+          }}
           onDragLeave={() => setDrag(false)}
-          onDrop={(e) => { e.preventDefault(); setDrag(false); handleFiles(e.dataTransfer.files); }}
+          onDrop={(e) => {
+            e.preventDefault();
+            setDrag(false);
+            handleFiles(e.dataTransfer.files);
+          }}
           className={`relative grid cursor-pointer place-items-center rounded-lg border border-dashed p-8 text-center transition-colors ${
             drag ? "border-accent bg-accent/5" : "border-border bg-surface/40 hover:bg-surface/60"
           }`}
@@ -78,7 +85,7 @@ export function UploadDialog({
           <input
             type="file"
             multiple
-            accept=".pdf,.csv"
+            accept=".pdf,.csv,.docx,.xlsx"
             onChange={(e) => handleFiles(e.target.files)}
             className="absolute inset-0 cursor-pointer opacity-0"
           />
