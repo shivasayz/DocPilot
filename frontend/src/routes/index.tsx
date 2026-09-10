@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import {
   Database,
@@ -32,7 +32,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
-import { useAuth } from "@/lib/auth";
+import { getToken, useAuth } from "@/lib/auth";
+import { api, listKnowledgeSources, type KnowledgeSource } from "@/lib/api";
+import { getQuestionsAsked } from "@/lib/stats";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -41,25 +43,33 @@ export const Route = createFileRoute("/")({
   component: Dashboard,
 });
 
-const stats: { label: string; value: number; delta: string; icon: typeof Database; format?: (n: number) => string }[] = [
-  { label: "Knowledge Sources", value: 12, delta: "+2 this week", icon: Database },
-  { label: "Indexed Documents", value: 284, delta: "+18 today", icon: FileText },
-  { label: "Questions Asked", value: 1204, delta: "+47 today", icon: MessagesSquare },
-  {
-    label: "Today's Learning Time",
-    value: 134,
-    delta: "Goal 120m",
-    icon: Clock,
-    format: (n) => `${Math.floor(n / 60)}h ${n % 60}m`,
-  },
-];
+type NoteAPI = {
+  id: string;
+  title: string;
+  content: string;
+  pinned: boolean;
+  favorite: boolean;
+  updated_at: string;
+};
 
-const recentDocs = [
-  { name: "Designing Data-Intensive Applications.pdf", size: "8.2 MB", chunks: 412, when: "2h ago" },
-  { name: "Rust Book — Ownership.md", size: "42 KB", chunks: 28, when: "5h ago" },
-  { name: "Transformer Architecture (Vaswani 2017).pdf", size: "1.4 MB", chunks: 96, when: "Yesterday" },
-  { name: "Personal — Weekly Review Template.md", size: "12 KB", chunks: 6, when: "2d ago" },
-];
+function formatWhen(iso: string | null | undefined) {
+  if (!iso) return "—";
+  const normalized = /Z$|[+-]\d{2}:\d{2}$/.test(iso) ? iso : `${iso}Z`;
+  const d = new Date(normalized);
+  if (Number.isNaN(d.getTime())) return "—";
+  const diff = Date.now() - d.getTime();
+  if (diff < 60_000) return "Just now";
+  if (diff < 3_600_000) return `${Math.floor(diff / 60_000)}m ago`;
+  if (diff < 86_400_000) return `${Math.floor(diff / 3_600_000)}h ago`;
+  if (diff < 172_800_000) return "Yesterday";
+  return d.toLocaleDateString();
+}
+
+function formatSize(bytes: number) {
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${Math.round(bytes / 1024)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
 
 function getGreeting(): string {
   const hour = new Date().getHours();
@@ -73,8 +83,82 @@ function Dashboard() {
   const { user } = useAuth();
   const [uploadOpen, setUploadOpen] = useState(false);
   const [folderOpen, setFolderOpen] = useState(false);
+  const [sources, setSources] = useState<KnowledgeSource[]>([]);
+  const [notes, setNotes] = useState<NoteAPI[]>([]);
+  const [questions, setQuestions] = useState(0);
+
+  const load = useCallback(async () => {
+    const token = getToken() ?? undefined;
+    setQuestions(getQuestionsAsked());
+    if (!token) {
+      setSources([]);
+      setNotes([]);
+      return;
+    }
+    try {
+      const [src, noteList] = await Promise.all([
+        listKnowledgeSources(token),
+        api<NoteAPI[]>("/notes/", { token }),
+      ]);
+      setSources(src);
+      setNotes(noteList);
+    } catch (e: any) {
+      toast.error("Failed to load dashboard", { description: e.message });
+    }
+  }, []);
+
+  useEffect(() => {
+    load();
+  }, [load]);
 
   const firstName = user?.name?.split(" ")[0] ?? "there";
+  const indexedCount = sources.filter((s) => s.status === "indexed").length;
+  const recentDocs = sources.slice(0, 4);
+  const recentNotes = notes.slice(0, 3);
+
+  const stats: {
+    label: string;
+    value: number;
+    delta: string;
+    icon: typeof Database;
+    format?: (n: number) => string;
+    showTrend?: boolean;
+  }[] = [
+    {
+      label: "Knowledge Sources",
+      value: sources.length,
+      delta: sources.length ? `${indexedCount} indexed` : "Upload to get started",
+      icon: Database,
+      showTrend: indexedCount > 0,
+    },
+    {
+      label: "Indexed Documents",
+      value: indexedCount,
+      delta:
+        sources.length === 0
+          ? "No documents yet"
+          : indexedCount === sources.length
+            ? "All sources indexed"
+            : `${sources.length - indexedCount} pending`,
+      icon: FileText,
+      showTrend: indexedCount > 0,
+    },
+    {
+      label: "Questions Asked",
+      value: questions,
+      delta: questions ? "From AI chat" : "Ask Copilot to start",
+      icon: MessagesSquare,
+      showTrend: questions > 0,
+    },
+    {
+      label: "Today's Learning Time",
+      value: 0,
+      delta: "Coming soon",
+      icon: Clock,
+      format: () => "—",
+      showTrend: false,
+    },
+  ];
 
   return (
     <div className="mx-auto w-full max-w-7xl space-y-8 px-4 py-8 md:px-8">
@@ -93,7 +177,6 @@ function Dashboard() {
         }
       />
 
-      {/* Stats */}
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {stats.map((s, i) => (
           <motion.div
@@ -112,8 +195,12 @@ function Dashboard() {
                 <div className="mt-3 text-2xl font-semibold tracking-tight tabular-nums">
                   <AnimatedCounter value={s.value} format={s.format} />
                 </div>
-                <div className="mt-1 flex items-center gap-1 text-xs text-success">
-                  <TrendingUp className="size-3" />
+                <div
+                  className={`mt-1 flex items-center gap-1 text-xs ${
+                    s.showTrend ? "text-success" : "text-muted-foreground"
+                  }`}
+                >
+                  {s.showTrend && <TrendingUp className="size-3" />}
                   {s.delta}
                 </div>
               </CardContent>
@@ -122,7 +209,6 @@ function Dashboard() {
         ))}
       </div>
 
-      {/* Quick Access */}
       <div>
         <h2 className="mb-3 text-sm font-medium">Quick Access</h2>
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
@@ -167,26 +253,34 @@ function Dashboard() {
             </Button>
           </CardHeader>
           <CardContent className="divide-y divide-border p-0">
-            {recentDocs.map((d) => (
-              <button
-                key={d.name}
-                onClick={() => toast(d.name, { description: `${d.size} · ${d.chunks} chunks` })}
-                className="grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-6 py-3.5 text-left transition-colors hover:bg-muted/40"
-              >
-                <div className="flex min-w-0 items-center gap-3">
-                  <div className="grid size-8 shrink-0 place-items-center rounded-md bg-muted">
-                    <FileText className="size-4 text-muted-foreground" />
-                  </div>
-                  <div className="min-w-0">
-                    <div className="truncate text-sm font-medium">{d.name}</div>
-                    <div className="text-xs text-muted-foreground">
-                      {d.size} · {d.chunks} chunks
+            {recentDocs.length === 0 ? (
+              <div className="px-6 py-8 text-center text-xs text-muted-foreground">
+                No documents yet. Upload from Knowledge Sources.
+              </div>
+            ) : (
+              recentDocs.map((d) => (
+                <button
+                  key={d.id}
+                  onClick={() => navigate({ to: "/knowledge" })}
+                  className="grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-6 py-3.5 text-left transition-colors hover:bg-muted/40"
+                >
+                  <div className="flex min-w-0 items-center gap-3">
+                    <div className="grid size-8 shrink-0 place-items-center rounded-md bg-muted">
+                      <FileText className="size-4 text-muted-foreground" />
+                    </div>
+                    <div className="min-w-0">
+                      <div className="truncate text-sm font-medium">{d.file_name || d.name}</div>
+                      <div className="text-xs text-muted-foreground">
+                        {formatSize(d.file_size)} · {d.chunks_count} chunks · {d.status}
+                      </div>
                     </div>
                   </div>
-                </div>
-                <span className="shrink-0 text-xs text-muted-foreground">{d.when}</span>
-              </button>
-            ))}
+                  <span className="shrink-0 text-xs text-muted-foreground">
+                    {formatWhen(d.last_indexed_at || d.created_at)}
+                  </span>
+                </button>
+              ))
+            )}
           </CardContent>
         </Card>
 
@@ -203,31 +297,31 @@ function Dashboard() {
             </Button>
           </CardHeader>
           <CardContent className="space-y-2">
-            {[
-              { t: "RAG retrieval tuning", tag: "AI" },
-              { t: "Weekly review — week 26", tag: "Personal" },
-              { t: "Postgres index strategy", tag: "DB" },
-            ].map((n) => (
-              <motion.button
-                key={n.t}
-                whileHover={{ x: 2 }}
-                onClick={() => navigate({ to: "/notes" })}
-                className="flex w-full items-center justify-between rounded-lg border border-border bg-surface/40 p-3 text-left transition-colors hover:border-foreground/20 hover:bg-surface/70"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="size-1.5 rounded-full bg-accent" />
-                  <span className="text-sm">{n.t}</span>
-                </div>
-                <Badge variant="secondary" className="text-[10px]">
-                  {n.tag}
-                </Badge>
-              </motion.button>
-            ))}
+            {recentNotes.length === 0 ? (
+              <div className="px-2 py-8 text-center text-xs text-muted-foreground">No notes yet.</div>
+            ) : (
+              recentNotes.map((n) => (
+                <motion.button
+                  key={n.id}
+                  whileHover={{ x: 2 }}
+                  onClick={() => navigate({ to: "/notes" })}
+                  className="flex w-full items-center justify-between rounded-lg border border-border bg-surface/40 p-3 text-left transition-colors hover:border-foreground/20 hover:bg-surface/70"
+                >
+                  <div className="flex min-w-0 items-center gap-3">
+                    <div className="size-1.5 shrink-0 rounded-full bg-accent" />
+                    <span className="truncate text-sm">{n.title || "Untitled"}</span>
+                  </div>
+                  <Badge variant="secondary" className="shrink-0 text-[10px]">
+                    {formatWhen(n.updated_at)}
+                  </Badge>
+                </motion.button>
+              ))
+            )}
           </CardContent>
         </Card>
       </div>
 
-      <UploadDialog open={uploadOpen} onOpenChange={setUploadOpen} />
+      <UploadDialog open={uploadOpen} onOpenChange={setUploadOpen} onUploaded={load} />
       <AddFolderDialog open={folderOpen} onOpenChange={setFolderOpen} />
     </div>
   );

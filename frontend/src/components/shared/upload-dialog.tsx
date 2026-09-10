@@ -17,9 +17,11 @@ import { getToken } from "@/lib/auth";
 export function UploadDialog({
   open,
   onOpenChange,
+  onUploaded,
 }: {
   open: boolean;
   onOpenChange: (v: boolean) => void;
+  onUploaded?: () => void;
 }) {
   const [files, setFiles] = useState<File[]>([]);
   const [drag, setDrag] = useState(false);
@@ -50,11 +52,12 @@ export function UploadDialog({
 
     setUploading(false);
     toast.success(`Uploaded ${completed} file${completed > 1 ? "s" : ""}`, {
-      description: "Processing in the background.",
+      description: "Click Index all on the Knowledge page to embed them.",
     });
     setFiles([]);
     onOpenChange(false);
     setPct(0);
+    onUploaded?.();
   };
 
   return (
@@ -85,7 +88,7 @@ export function UploadDialog({
           <input
             type="file"
             multiple
-            accept=".pdf,.csv,.docx,.xlsx"
+            accept=".pdf,.csv,.docx,.xlsx,.txt,.md,.doc,.xls"
             onChange={(e) => handleFiles(e.target.files)}
             className="absolute inset-0 cursor-pointer opacity-0"
           />
@@ -93,7 +96,7 @@ export function UploadDialog({
             <Upload className="size-4" />
           </div>
           <div className="mt-3 text-sm font-medium">Drop files or click to browse</div>
-          <div className="text-xs text-muted-foreground">PDF · CSV</div>
+          <div className="text-xs text-muted-foreground">PDF · DOCX · CSV · XLSX · MD · TXT</div>
         </label>
 
         {files.length > 0 && (

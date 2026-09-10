@@ -15,8 +15,9 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { AppSidebar } from "@/components/layout/app-sidebar";
 import { TopNav } from "@/components/layout/top-nav";
 import { Toaster } from "@/components/ui/sonner";
-import { getToken } from "@/lib/auth";
+import { getToken, logout } from "@/lib/auth";
 import { initTheme } from "@/lib/theme";
+import { setUnauthorizedHandler } from "@/lib/api";
 
 function NotFoundComponent() {
   return (
@@ -114,6 +115,12 @@ function RootComponent() {
 
   useEffect(() => {
     initTheme();
+    setUnauthorizedHandler(() => {
+      logout();
+      setAuthenticated(false);
+      sessionStorage.setItem("copilot.session.expired", "1");
+      window.location.assign("/login");
+    });
     const token = getToken();
     if (!isAuthPage && !token) {
       router.navigate({ to: "/login" });

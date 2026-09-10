@@ -27,6 +27,12 @@ export function LoginPage() {
   const [loadingMsg, setLoadingMsg] = useState(0);
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
 
+  useEffect(() => {
+    if (sessionStorage.getItem("copilot.session.expired") === "1") {
+      sessionStorage.removeItem("copilot.session.expired");
+      toast.error("Session expired");
+    }
+  }, []);
 
   const validate = () => {
     const e: typeof errors = {};
