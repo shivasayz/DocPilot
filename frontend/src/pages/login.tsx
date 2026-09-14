@@ -58,16 +58,14 @@ export function LoginPage() {
     };
 
     try {
-      const [user] = await Promise.all([
-        login(email, password),
-        showMessages(),
-      ]);
+      const [user] = await Promise.all([login(email, password), showMessages()]);
       // Brief pause on final message
       await new Promise((r) => setTimeout(r, 1000));
       toast.success(`Welcome back, ${user.name.split(" ")[0]}!`);
       navigate({ to: "/" });
-    } catch (err: any) {
-      toast.error("Login failed", { description: err.message });
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Something went wrong";
+      toast.error("Login failed", { description: message });
       setLoading(false);
     }
   };
@@ -101,9 +99,7 @@ export function LoginPage() {
             exit={{ opacity: 0 }}
           >
             <h2 className="text-xl font-semibold tracking-tight">Sign in</h2>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Enter your credentials to continue
-            </p>
+            <p className="mt-1 text-sm text-muted-foreground">Enter your credentials to continue</p>
 
             <form onSubmit={handleSubmit} className="mt-6 space-y-4">
               <div className="space-y-1.5">
@@ -113,7 +109,10 @@ export function LoginPage() {
                   type="email"
                   placeholder="you@example.com"
                   value={email}
-                  onChange={(e) => { setEmail(e.target.value); setErrors((p) => ({ ...p, email: undefined })); }}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    setErrors((p) => ({ ...p, email: undefined }));
+                  }}
                   aria-invalid={!!errors.email}
                 />
                 {errors.email && <p className="text-xs text-destructive">{errors.email}</p>}
@@ -132,7 +131,10 @@ export function LoginPage() {
                     type={showPassword ? "text" : "password"}
                     placeholder="••••••••"
                     value={password}
-                    onChange={(e) => { setPassword(e.target.value); setErrors((p) => ({ ...p, password: undefined })); }}
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                      setErrors((p) => ({ ...p, password: undefined }));
+                    }}
                     className="pr-10"
                     aria-invalid={!!errors.password}
                   />
@@ -148,8 +150,14 @@ export function LoginPage() {
               </div>
 
               <div className="flex items-center gap-2">
-                <Checkbox id="remember" checked={remember} onCheckedChange={(v) => setRemember(v === true)} />
-                <Label htmlFor="remember" className="text-xs text-muted-foreground cursor-pointer">Remember me</Label>
+                <Checkbox
+                  id="remember"
+                  checked={remember}
+                  onCheckedChange={(v) => setRemember(v === true)}
+                />
+                <Label htmlFor="remember" className="text-xs text-muted-foreground cursor-pointer">
+                  Remember me
+                </Label>
               </div>
 
               <Button type="submit" className="w-full" disabled={loading}>
@@ -169,7 +177,9 @@ export function LoginPage() {
 
             <p className="mt-5 text-center text-sm text-muted-foreground">
               No account?{" "}
-              <Link to="/signup" className="text-accent font-medium hover:underline">Sign up</Link>
+              <Link to="/signup" className="text-accent font-medium hover:underline">
+                Sign up
+              </Link>
             </p>
           </motion.div>
         )}
