@@ -121,6 +121,7 @@ function RootComponent() {
       sessionStorage.setItem("copilot.session.expired", "1");
       window.location.assign("/login");
     });
+
     const token = getToken();
     if (!isAuthPage && !token) {
       router.navigate({ to: "/login" });

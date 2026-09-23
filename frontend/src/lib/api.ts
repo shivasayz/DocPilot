@@ -143,3 +143,25 @@ export function deleteKnowledgeSource(id: string, token?: string) {
     token,
   });
 }
+
+export type WidgetSettings = {
+  widget_enabled: boolean;
+  auto_start: boolean;
+  theme: "dark" | "light";
+  position: "top-left" | "top-right" | "bottom-left" | "bottom-right";
+  auto_sync: boolean;
+  keyboard_shortcut: string;
+  notifications_enabled: boolean;
+};
+
+export function getWidgetSettings(token?: string) {
+  return api<WidgetSettings>("/api/v1/widget/settings", { token });
+}
+
+export function updateWidgetSettings(body: Partial<WidgetSettings>, token?: string) {
+  return api<WidgetSettings>("/api/v1/widget/settings", {
+    method: "PUT",
+    token,
+    body,
+  });
+}
