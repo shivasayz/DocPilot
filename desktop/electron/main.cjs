@@ -163,13 +163,13 @@ ipcMain.handle("apply-settings", (_event, settings) => {
     place(expanded, false);
   }
   if (!latest.widget_enabled) {
-    if (appliedOnce && previousEnabled) notify("Copilot", "Widget is turned off.");
+    if (appliedOnce && previousEnabled) notify("DocPilot", "Widget is turned off.");
     appliedOnce = true;
     setWidgetVisible(false);
     return { visible: false, expanded, ...loginItem };
   }
   setWidgetVisible(true);
-  if (appliedOnce && !previousEnabled) notify("Copilot", "Widget is on.");
+  if (appliedOnce && !previousEnabled) notify("DocPilot", "Widget is on.");
   appliedOnce = true;
   return { visible: !!win?.isVisible(), expanded, ...loginItem };
 });

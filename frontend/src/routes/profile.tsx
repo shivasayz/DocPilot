@@ -20,7 +20,7 @@ import { useAuth, getToken } from "@/lib/auth";
 import { api } from "@/lib/api";
 
 export const Route = createFileRoute("/profile")({
-  head: () => ({ meta: [{ title: "Profile — Copilot" }] }),
+  head: () => ({ meta: [{ title: "Profile — DocPilot" }] }),
   component: ProfilePage,
 });
 

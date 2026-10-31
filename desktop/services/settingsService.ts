@@ -11,7 +11,7 @@ export type WidgetSettings = {
   notifications_enabled: boolean;
 };
 
-const TOKEN_KEY = "copilot.auth.token";
+const TOKEN_KEY = "docpilot.auth.token";
 
 export const API_BASE = import.meta.env.VITE_API_URL ?? "http://localhost:8000";
 

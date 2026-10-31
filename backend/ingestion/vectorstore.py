@@ -4,12 +4,14 @@ from __future__ import annotations
 
 import os
 import pickle
+import time
 from typing import Any, List
 
 import faiss
 import numpy as np
 from sentence_transformers import SentenceTransformer
 
+from ingestion.chunk_ids import make_chunk_id
 from ingestion.embedding import EmbeddingPipeline
 
 
@@ -41,18 +43,23 @@ class FaissVectorStore:
         )
         chunks = emb_pipe.chunk_documents(documents)
         embeddings = emb_pipe.embed_chunks(chunks)
-        metadatas = [
-            {
-                "text": chunk.page_content,
-                "source": chunk.metadata.get("source"),
-                "file_name": chunk.metadata.get("file_name")
-                or os.path.basename(chunk.metadata.get("source") or ""),
-                "source_type": chunk.metadata.get("source_type", "file"),
-                "note_id": chunk.metadata.get("note_id"),
-                "note_title": chunk.metadata.get("note_title"),
-            }
-            for chunk in chunks
-        ]
+        metadatas = []
+        for chunk in chunks:
+            file_name = chunk.metadata.get("file_name") or os.path.basename(chunk.metadata.get("source") or "")
+            note_id = chunk.metadata.get("note_id")
+            text = chunk.page_content
+            source_key = str(note_id or file_name or chunk.metadata.get("source") or "")
+            metadatas.append(
+                {
+                    "text": text,
+                    "source": chunk.metadata.get("source"),
+                    "file_name": file_name,
+                    "source_type": chunk.metadata.get("source_type", "file"),
+                    "note_id": note_id,
+                    "note_title": chunk.metadata.get("note_title"),
+                    "chunk_id": make_chunk_id(source_key, text),
+                }
+            )
         self.index = None
         self.metadata = []
         self.add_embeddings(np.array(embeddings).astype("float32"), metadatas)
@@ -89,11 +96,21 @@ class FaissVectorStore:
         D, I = self.index.search(query_embedding, top_k)
         results = []
         for idx, dist in zip(I[0], D[0]):
-            meta = self.metadata[idx] if idx < len(self.metadata) else None
-            results.append({"index": int(idx), "distance": float(dist), "metadata": meta})
+            index = int(idx)
+            meta = self.metadata[index] if 0 <= index < len(self.metadata) else None
+            results.append({"index": index, "distance": float(dist), "metadata": meta})
         return results
 
     def query(self, query_text: str, top_k: int = 5):
+        results, _timing = self.query_timed(query_text, top_k=top_k)
+        return results
+
+    def query_timed(self, query_text: str, top_k: int = 5):
         print(f"[INFO] Querying vector store for: '{query_text}'")
+        started = time.perf_counter()
         query_emb = self.model.encode([query_text]).astype("float32")
-        return self.search(query_emb, top_k=top_k)
+        embed_ms = (time.perf_counter() - started) * 1000
+        started = time.perf_counter()
+        results = self.search(query_emb, top_k=top_k)
+        search_ms = (time.perf_counter() - started) * 1000
+        return results, {"embed_ms": embed_ms, "search_ms": search_ms, "retrieval_ms": embed_ms + search_ms}

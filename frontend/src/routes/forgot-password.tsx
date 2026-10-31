@@ -3,7 +3,7 @@ import { ForgotPasswordPage } from "@/pages/forgot-password";
 
 export const Route = createFileRoute("/forgot-password")({
   head: () => ({
-    meta: [{ title: "Reset Password — Copilot" }],
+    meta: [{ title: "Reset Password — DocPilot" }],
   }),
   component: ForgotPasswordPage,
 });

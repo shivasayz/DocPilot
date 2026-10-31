@@ -1,0 +1,796 @@
+{
+  "cases": [
+    {
+      "id": "personality-etymology",
+      "query": "What is the Latin origin of the word personality and what does it literally mean?",
+      "relevant": [
+        {
+          "file_name": "PCPD UNIT I NOTES-KINGSTON J.pdf",
+          "chunk_id": "4d7148c52375b5c7",
+          "passage": "Personality is the word derived from Latin word \u2018Persona\u2019."
+        }
+      ],
+      "k": 5,
+      "expected_facts": [
+        "Personality is the word derived from Latin word \u2018Persona\u2019."
+      ]
+    },
+    {
+      "id": "personality-definition",
+      "query": "How is personality defined as a pattern of thoughts, feelings and behaviours?",
+      "relevant": [
+        {
+          "file_name": "PCPD UNIT I NOTES-KINGSTON J.pdf",
+          "chunk_id": "cb65204d5e16e92f",
+          "passage": "1.1 THE CONCEPT OF PERSONALITY- DEFINITION: \n\u201cPersonality is that pattern of characteristic thoughts, feelings, and behaviours that distinguishes one \nperson from another and that persists over time\u201d \n\u201cIt is the sum of biologically based an"
+        }
+      ],
+      "k": 5,
+      "expected_facts": [
+        "1.1 THE CONCEPT OF PERSONALITY- DEFINITION: \n\u201cPersonality is that pattern of characteristic thoughts, feelings, and behaviours that distinguishes one \nperson from another and that persists over time\u201d \n\u201cIt is the sum of biologically based an"
+      ]
+    },
+    {
+      "id": "allport-trait-hierarchy",
+      "query": "What are the three levels of Gordon Allport's hierarchy of personality traits?",
+      "relevant": [
+        {
+          "file_name": "PCPD UNIT I NOTES-KINGSTON J.pdf",
+          "chunk_id": "1f993b59704ea92f",
+          "passage": "Gordon Allport, a Harvard University \nPsychologist, has described this hierarchy with three levels."
+        }
+      ],
+      "k": 5,
+      "expected_facts": [
+        "Gordon Allport, a Harvard University \nPsychologist, has described this hierarchy with three levels."
+      ]
+    },
+    {
+      "id": "cardinal-trait-example",
+      "query": "Which historical figure is given as an example of a cardinal trait, and what was the trait?",
+      "relevant": [
+        {
+          "file_name": "PCPD UNIT I NOTES-KINGSTON J.pdf",
+          "chunk_id": "1f993b59704ea92f",
+          "passage": "Figure: Allport\u2019s Hierarchy of Personality Traits  \n \n\uf0b7 Cardinal traits : These are those personality characteristics which dominate the whole \nlife of an individual."
+        }
+      ],
+      "k": 5,
+      "expected_facts": [
+        "Figure: Allport\u2019s Hierarchy of Personality Traits  \n \n\uf0b7 Cardinal traits : These are those personality characteristics which dominate the whole \nlife of an individual."
+      ]
+    },
+    {
+      "id": "central-traits-count",
+      "query": "How many central traits do normal people typically have?",
+      "relevant": [
+        {
+          "file_name": "PCPD UNIT I NOTES-KINGSTON J.pdf",
+          "chunk_id": "1f993b59704ea92f",
+          "passage": "Very few people have cardinal traits."
+        }
+      ],
+      "k": 5,
+      "expected_facts": [
+        "Very few people have cardinal traits."
+      ]
+    },
+    {
+      "id": "secondary-traits",
+      "query": "Why are secondary traits less helpful for understanding personality?",
+      "relevant": [
+        {
+          "file_name": "PCPD UNIT I NOTES-KINGSTON J.pdf",
+          "chunk_id": "af84d62071de438f",
+          "passage": "These traits are less helpful in understanding personality."
+        }
+      ],
+      "k": 5,
+      "expected_facts": [
+        "These traits are less helpful in understanding personality."
+      ]
+    },
+    {
+      "id": "big-five-names",
+      "query": "What are the five dimensions of the Big Five model and what does OCEAN stand for?",
+      "relevant": [
+        {
+          "file_name": "PCPD UNIT I NOTES-KINGSTON J.pdf",
+          "chunk_id": "cb65204d5e16e92f",
+          "passage": "1.1 THE CONCEPT OF PERSONALITY- DEFINITION: \n\u201cPersonality is that pattern of characteristic thoughts, feelings, and behaviours that distinguishes one \nperson from another and that persists over time\u201d \n\u201cIt is the sum of biologically based an"
+        }
+      ],
+      "k": 5,
+      "expected_facts": [
+        "1.1 THE CONCEPT OF PERSONALITY- DEFINITION: \n\u201cPersonality is that pattern of characteristic thoughts, feelings, and behaviours that distinguishes one \nperson from another and that persists over time\u201d \n\u201cIt is the sum of biologically based an"
+      ]
+    },
+    {
+      "id": "big-five-basis",
+      "query": "Is the Big Five model based on scientific experiments or on language descriptors and factor analysis?",
+      "relevant": [
+        {
+          "file_name": "PCPD UNIT I NOTES-KINGSTON J.pdf",
+          "chunk_id": "cb65204d5e16e92f",
+          "passage": "1.1 THE CONCEPT OF PERSONALITY- DEFINITION: \n\u201cPersonality is that pattern of characteristic thoughts, feelings, and behaviours that distinguishes one \nperson from another and that persists over time\u201d \n\u201cIt is the sum of biologically based an"
+        }
+      ],
+      "k": 5,
+      "expected_facts": [
+        "1.1 THE CONCEPT OF PERSONALITY- DEFINITION: \n\u201cPersonality is that pattern of characteristic thoughts, feelings, and behaviours that distinguishes one \nperson from another and that persists over time\u201d \n\u201cIt is the sum of biologically based an"
+      ]
+    },
+    {
+      "id": "openness-to-experience",
+      "query": "What does high openness to experience look like and how can it be perceived by others?",
+      "relevant": [
+        {
+          "file_name": "PCPD UNIT I NOTES-KINGSTON J.pdf",
+          "chunk_id": "6f4429e0f2b5dde0",
+          "passage": "High openness can be perceived as unpredictability or lack of focus."
+        }
+      ],
+      "k": 5,
+      "expected_facts": [
+        "High openness can be perceived as unpredictability or lack of focus."
+      ]
+    },
+    {
+      "id": "conscientiousness",
+      "query": "What is conscientiousness and why might high conscientiousness be seen as stubbornness?",
+      "relevant": [
+        {
+          "file_name": "PCPD UNIT I NOTES-KINGSTON J.pdf",
+          "chunk_id": "e3a2d1f7ee879a06",
+          "passage": "High conscientiousness is \noften perceived as stubbornness and obsession."
+        }
+      ],
+      "k": 5,
+      "expected_facts": [
+        "High conscientiousness is \noften perceived as stubbornness and obsession."
+      ]
+    },
+    {
+      "id": "extraversion",
+      "query": "How is low extraversion perceived by other people?",
+      "relevant": [
+        {
+          "file_name": "PCPD UNIT I NOTES-KINGSTON J.pdf",
+          "chunk_id": "15753c160d49754c",
+          "passage": "Low extraversion causes a reserved, reflective personality, which can be \nperceived as aloof or self-absorbed."
+        }
+      ],
+      "k": 5,
+      "expected_facts": [
+        "Low extraversion causes a reserved, reflective personality, which can be \nperceived as aloof or self-absorbed."
+      ]
+    },
+    {
+      "id": "agreeableness",
+      "query": "What are the traits of people with low agreeableness?",
+      "relevant": [
+        {
+          "file_name": "PCPD UNIT I NOTES-KINGSTON J.pdf",
+          "chunk_id": "15753c160d49754c",
+          "passage": "Low agreeableness \npersonalities are often competitive or challenging people, which can be seen as argumentative or \nuntrustworthy."
+        }
+      ],
+      "k": 5,
+      "expected_facts": [
+        "Low agreeableness \npersonalities are often competitive or challenging people, which can be seen as argumentative or \nuntrustworthy."
+      ]
+    },
+    {
+      "id": "neuroticism",
+      "query": "Which personality dimension is associated with anxiety, anger and emotional stability?",
+      "relevant": [
+        {
+          "file_name": "PCPD UNIT I NOTES-KINGSTON J.pdf",
+          "chunk_id": "3021fab1eab2a113",
+          "passage": "Neuroticism is a tendency to experience unpleasant emotions easily, such as anger, anxiety, depression, \nand vulnerability."
+        }
+      ],
+      "k": 5,
+      "expected_facts": [
+        "Neuroticism is a tendency to experience unpleasant emotions easily, such as anger, anxiety, depression, \nand vulnerability."
+      ]
+    },
+    {
+      "id": "personality-development-meaning",
+      "query": "What does the process of personality development include?",
+      "relevant": [
+        {
+          "file_name": "PCPD UNIT I NOTES-KINGSTON J.pdf",
+          "chunk_id": "f779984752f34fb3",
+          "passage": "\uf076 Hence, it can be concluded that the process of improving or transforming the personality is called \npersonality development."
+        }
+      ],
+      "k": 5,
+      "expected_facts": [
+        "\uf076 Hence, it can be concluded that the process of improving or transforming the personality is called \npersonality development."
+      ]
+    },
+    {
+      "id": "personality-development-benefits",
+      "query": "What are the key benefits of developing your personality?",
+      "relevant": [
+        {
+          "file_name": "PCPD UNIT I NOTES-KINGSTON J.pdf",
+          "chunk_id": "e15eacb6242d02a4",
+          "passage": "To better appreciate its importance, some of the key benefits of developing your personality include the \nfollowing: \n \na."
+        }
+      ],
+      "k": 5,
+      "expected_facts": [
+        "To better appreciate its importance, some of the key benefits of developing your personality include the \nfollowing: \n \na."
+      ]
+    },
+    {
+      "id": "freud-iceberg",
+      "query": "How does Freud's iceberg analogy describe the conscious and unconscious mind?",
+      "relevant": [
+        {
+          "file_name": "PCPD UNIT I NOTES-KINGSTON J.pdf",
+          "chunk_id": "d651ef8723baf58d",
+          "passage": "1.5.1 FREUD THEORY: \nFreud theorized that personality contains three structures\u2014the id, ego, and superego\u2014and that the mind is \nlike an iceberg, the unconscious making up 90% while the conscious (like the tip of the iceberg floating \nabove"
+        }
+      ],
+      "k": 5,
+      "expected_facts": [
+        "1.5.1 FREUD THEORY: \nFreud theorized that personality contains three structures\u2014the id, ego, and superego\u2014and that the mind is \nlike an iceberg, the unconscious making up 90% while the conscious (like the tip of the iceberg floating \nabove"
+      ]
+    },
+    {
+      "id": "freud-id-ego-superego",
+      "query": "What are the id, ego and superego in Freud's theory?",
+      "relevant": [
+        {
+          "file_name": "PCPD UNIT I NOTES-KINGSTON J.pdf",
+          "chunk_id": "d651ef8723baf58d",
+          "passage": "1.5.1 FREUD THEORY: \nFreud theorized that personality contains three structures\u2014the id, ego, and superego\u2014and that the mind is \nlike an iceberg, the unconscious making up 90% while the conscious (like the tip of the iceberg floating \nabove"
+        }
+      ],
+      "k": 5,
+      "expected_facts": [
+        "1.5.1 FREUD THEORY: \nFreud theorized that personality contains three structures\u2014the id, ego, and superego\u2014and that the mind is \nlike an iceberg, the unconscious making up 90% while the conscious (like the tip of the iceberg floating \nabove"
+      ]
+    },
+    {
+      "id": "id-pleasure-principle",
+      "query": "Which part of the mind operates on the pleasure principle?",
+      "relevant": [
+        {
+          "file_name": "PCPD UNIT I NOTES-KINGSTON J.pdf",
+          "chunk_id": "62ee9f6c33fb81fc",
+          "passage": "Freud said that the id \noperates according to the pleasure principle\u2014it aims toward pleasurable things and away from painful \nthings."
+        }
+      ],
+      "k": 5,
+      "expected_facts": [
+        "Freud said that the id \noperates according to the pleasure principle\u2014it aims toward pleasurable things and away from painful \nthings."
+      ]
+    },
+    {
+      "id": "overly-strong-superego",
+      "query": "What happens to a person whose superego is too strong?",
+      "relevant": [
+        {
+          "file_name": "PCPD UNIT I NOTES-KINGSTON J.pdf",
+          "chunk_id": "57a4e05100f26fa5",
+          "passage": "If \nthe superego is too strong, a person is constantly worried, nervous, and full of guilt and anxiety and is \nalways repressing the id\u2019s desires."
+        }
+      ],
+      "k": 5,
+      "expected_facts": [
+        "If \nthe superego is too strong, a person is constantly worried, nervous, and full of guilt and anxiety and is \nalways repressing the id\u2019s desires."
+      ]
+    },
+    {
+      "id": "defense-mechanisms",
+      "query": "What are defense mechanisms according to psychoanalytic theory?",
+      "relevant": [
+        {
+          "file_name": "PCPD UNIT I NOTES-KINGSTON J.pdf",
+          "chunk_id": "77f6ea740d3a31a4",
+          "passage": "According to psychoanalytic theory, defense mechanisms are automatic (unconscious) reactions to the fear \nthat the id\u2019s desires will overwhelm the ego."
+        }
+      ],
+      "k": 5,
+      "expected_facts": [
+        "According to psychoanalytic theory, defense mechanisms are automatic (unconscious) reactions to the fear \nthat the id\u2019s desires will overwhelm the ego."
+      ]
+    },
+    {
+      "id": "erikson-eight-stages",
+      "query": "List Erikson's eight psychosocial stages and their crises.",
+      "relevant": [
+        {
+          "file_name": "PCPD UNIT I NOTES-KINGSTON J.pdf",
+          "chunk_id": "57a4e05100f26fa5",
+          "passage": "1.5.2 ERIKSON THEORY: \nErikson converted Freud\u2019s emphasis to a focus on social relationships into eight psychosocial stages."
+        }
+      ],
+      "k": 5,
+      "expected_facts": [
+        "1.5.2 ERIKSON THEORY: \nErikson converted Freud\u2019s emphasis to a focus on social relationships into eight psychosocial stages."
+      ]
+    },
+    {
+      "id": "erikson-adolescence",
+      "query": "Which Erikson stage deals with identity versus role confusion?",
+      "relevant": [
+        {
+          "file_name": "PCPD UNIT I NOTES-KINGSTON J.pdf",
+          "chunk_id": "708b609ac4f05772",
+          "passage": "Adolescent \nIdentity versus \nRole of \nconfusion \nAn adolescent is beginning to think abstractly and can conceptualize his \nor her self-identity and personality."
+        }
+      ],
+      "k": 5,
+      "expected_facts": [
+        "Adolescent \nIdentity versus \nRole of \nconfusion \nAn adolescent is beginning to think abstractly and can conceptualize his \nor her self-identity and personality."
+      ]
+    },
+    {
+      "id": "erikson-generativity",
+      "query": "What happens to middle-aged adults who fail at generativity?",
+      "relevant": [
+        {
+          "file_name": "PCPD UNIT I NOTES-KINGSTON J.pdf",
+          "chunk_id": "77a74d8983f9e963",
+          "passage": "7.Middle-aged \nadult \n \nGenerativity \nversus \nStagnation \nMiddle-aged adults feel an urgency to leave a mark on the world, to \ngenerate something of lasting value and worth."
+        }
+      ],
+      "k": 5,
+      "expected_facts": [
+        "7.Middle-aged \nadult \n \nGenerativity \nversus \nStagnation \nMiddle-aged adults feel an urgency to leave a mark on the world, to \ngenerate something of lasting value and worth."
+      ]
+    },
+    {
+      "id": "success-definition",
+      "query": "What is the best definition of success and what do progressive, realization and worthy mean?",
+      "relevant": [
+        {
+          "file_name": "PCPD UNIT I NOTES-KINGSTON J.pdf",
+          "chunk_id": "43f7611f4081dfba",
+          "passage": "The best definition for success is \n\u201cSuccess is the progressive realization of a worthy goal\u201d \nLet's look at these definitions carefully."
+        }
+      ],
+      "k": 5,
+      "expected_facts": [
+        "The best definition for success is \n\u201cSuccess is the progressive realization of a worthy goal\u201d \nLet's look at these definitions carefully."
+      ]
+    },
+    {
+      "id": "harvard-goals-study",
+      "query": "What did the 1979 Harvard MBA study find about students who wrote down their goals?",
+      "relevant": [
+        {
+          "file_name": "PCPD UNIT I NOTES-KINGSTON J.pdf",
+          "chunk_id": "7556edadc69384ea",
+          "passage": "In a study conducted on students in the 1979 Harvard MBA program, only three percent of the \ngraduates had written goals and plans; 13 percent had goals, but they were not in writing; and 84 percent \nhad set no goals at all."
+        }
+      ],
+      "k": 5,
+      "expected_facts": [
+        "In a study conducted on students in the 1979 Harvard MBA program, only three percent of the \ngraduates had written goals and plans; 13 percent had goals, but they were not in writing; and 84 percent \nhad set no goals at all."
+      ]
+    },
+    {
+      "id": "goal-setting-positive-framing",
+      "query": "Why should goals be framed in the positive instead of as away-from goals?",
+      "relevant": [
+        {
+          "file_name": "PCPD UNIT I NOTES-KINGSTON J.pdf",
+          "chunk_id": "020d01070b8367e1",
+          "passage": "Some goals are called away from goals."
+        }
+      ],
+      "k": 5,
+      "expected_facts": [
+        "Some goals are called away from goals."
+      ]
+    },
+    {
+      "id": "success-factors",
+      "query": "What factors are responsible for success?",
+      "relevant": [
+        {
+          "file_name": "PCPD UNIT I NOTES-KINGSTON J.pdf",
+          "chunk_id": "8f28f04b747956a0",
+          "passage": "- Hurdles in achieving \nsuccess - Overcoming hurdles - Factors responsible for success \u2013 What is failure - Causes of failure."
+        }
+      ],
+      "k": 5,
+      "expected_facts": [
+        "- Hurdles in achieving \nsuccess - Overcoming hurdles - Factors responsible for success \u2013 What is failure - Causes of failure."
+      ]
+    },
+    {
+      "id": "socrates-desire-story",
+      "query": "What did Socrates teach the young man about desire by ducking him in the river?",
+      "relevant": [
+        {
+          "file_name": "PCPD UNIT I NOTES-KINGSTON J.pdf",
+          "chunk_id": "99a7f331db028941",
+          "passage": "Socrates told the young man to meet him near \nthe river the next morning."
+        }
+      ],
+      "k": 5,
+      "expected_facts": [
+        "Socrates told the young man to meet him near \nthe river the next morning."
+      ]
+    },
+    {
+      "id": "persistence-quote",
+      "query": "Why does the author say talent, genius and education cannot replace persistence?",
+      "relevant": [
+        {
+          "file_name": "PCPD UNIT I NOTES-KINGSTON J.pdf",
+          "chunk_id": "6e209858d809fd3a",
+          "passage": "The Power of Persistence \nNothing will take the place of persistence."
+        }
+      ],
+      "k": 5,
+      "expected_facts": [
+        "The Power of Persistence \nNothing will take the place of persistence."
+      ]
+    },
+    {
+      "id": "hurdles-to-success",
+      "query": "What are the common hurdles in achieving success?",
+      "relevant": [
+        {
+          "file_name": "PCPD UNIT I NOTES-KINGSTON J.pdf",
+          "chunk_id": "b9463efe55470dad",
+          "passage": "1.6.3 HURDLES IN ACHIEVING SUCCESS: \nAlthough there are lot of potential obstacles, the following hurdles are more common."
+        }
+      ],
+      "k": 5,
+      "expected_facts": [
+        "1.6.3 HURDLES IN ACHIEVING SUCCESS: \nAlthough there are lot of potential obstacles, the following hurdles are more common."
+      ]
+    },
+    {
+      "id": "limiting-beliefs",
+      "query": "How do limiting beliefs like procrastination and self-sabotage hold people back?",
+      "relevant": [
+        {
+          "file_name": "PCPD UNIT I NOTES-KINGSTON J.pdf",
+          "chunk_id": "bba95f0bbbc9b675",
+          "passage": "Sometimes these beliefs can hold you back and limit your ability to achieve you goals."
+        }
+      ],
+      "k": 5,
+      "expected_facts": [
+        "Sometimes these beliefs can hold you back and limit your ability to achieve you goals."
+      ]
+    },
+    {
+      "id": "fear-of-success",
+      "query": "What is the fear of success and how does self doubt come into play?",
+      "relevant": [
+        {
+          "file_name": "PCPD UNIT I NOTES-KINGSTON J.pdf",
+          "chunk_id": "7b17289e96ff8088",
+          "passage": "Self doubt comes into play and you try to talk \nyourself out of it."
+        }
+      ],
+      "k": 5,
+      "expected_facts": [
+        "Self doubt comes into play and you try to talk \nyourself out of it."
+      ]
+    },
+    {
+      "id": "failure-definition-examples",
+      "query": "How is failure defined, and what examples like Edison and Henry Ford are given?",
+      "relevant": [
+        {
+          "file_name": "PCPD UNIT I NOTES-KINGSTON J.pdf",
+          "chunk_id": "450f8bb148ee4d2a",
+          "passage": "Henry Ford had two bankruptcies before his famous success."
+        }
+      ],
+      "k": 5,
+      "expected_facts": [
+        "Henry Ford had two bankruptcies before his famous success."
+      ]
+    },
+    {
+      "id": "causes-of-failure",
+      "query": "What are the common causes of failure?",
+      "relevant": [
+        {
+          "file_name": "PCPD UNIT I NOTES-KINGSTON J.pdf",
+          "chunk_id": "542d5e23d2e5acf5",
+          "passage": "Kingston JEGANATHAN, HOD, JMC, UISAA, GNU \n1.7.1    CAUSES OF FAILURE: \nThe following factors can be considered as causes of failure."
+        }
+      ],
+      "k": 5,
+      "expected_facts": [
+        "Kingston JEGANATHAN, HOD, JMC, UISAA, GNU \n1.7.1    CAUSES OF FAILURE: \nThe following factors can be considered as causes of failure."
+      ]
+    },
+    {
+      "id": "fatalistic-attitude",
+      "query": "How does a fatalistic attitude lead to failure and what is the suggested remedy?",
+      "relevant": [
+        {
+          "file_name": "PCPD UNIT I NOTES-KINGSTON J.pdf",
+          "chunk_id": "6810d69abce4655a",
+          "passage": "Fatalistic Attitude: \nA fatalistic attitude prevents people from accepting responsibility for their position in life."
+        }
+      ],
+      "k": 5,
+      "expected_facts": [
+        "Fatalistic Attitude: \nA fatalistic attitude prevents people from accepting responsibility for their position in life."
+      ]
+    },
+    {
+      "id": "swot-meaning",
+      "query": "What does SWOT stand for and when can a SWOT analysis be used?",
+      "relevant": [
+        {
+          "file_name": "PCPD UNIT I NOTES-KINGSTON J.pdf",
+          "chunk_id": "607bc7919dfce5eb",
+          "passage": "Kingston JEGANATHAN, HOD, JMC, UISAA, GNU \n\uf0a7 Career Starters \n\uf0a7 Practitioners and HR \n\uf0a7 Doctors and Engineers \n\uf0a7 Employees \n\uf0a7 Husband and Wife \n\uf0a7 Parents \n \n \n1.8.1 THE ADVANTAGES OF CONDUCTING A PERSONAL SWOT ANALYSIS: \nThe main purpose of"
+        }
+      ],
+      "k": 5,
+      "expected_facts": [
+        "Kingston JEGANATHAN, HOD, JMC, UISAA, GNU \n\uf0a7 Career Starters \n\uf0a7 Practitioners and HR \n\uf0a7 Doctors and Engineers \n\uf0a7 Employees \n\uf0a7 Husband and Wife \n\uf0a7 Parents \n \n \n1.8.1 THE ADVANTAGES OF CONDUCTING A PERSONAL SWOT ANALYSIS: \nThe main purpose of"
+      ]
+    },
+    {
+      "id": "personal-swot-questions",
+      "query": "What questions should I ask myself when identifying my personal strengths and weaknesses?",
+      "relevant": [
+        {
+          "file_name": "PCPD UNIT I NOTES-KINGSTON J.pdf",
+          "chunk_id": "885dc60dc0d9c92b",
+          "passage": "\uf0a7 Measures your scopes of reaching desired goals \n\uf0a7 Boosts your career, life and personality \n\uf0a7 Helps to better understand who you really are as a person \n\uf0a7 Maximizes your strengths and diminishes your weaknesses \n\uf0a7 Explores and also enhanc"
+        }
+      ],
+      "k": 5,
+      "expected_facts": [
+        "\uf0a7 Measures your scopes of reaching desired goals \n\uf0a7 Boosts your career, life and personality \n\uf0a7 Helps to better understand who you really are as a person \n\uf0a7 Maximizes your strengths and diminishes your weaknesses \n\uf0a7 Explores and also enhanc"
+      ]
+    },
+    {
+      "id": "swot-bookstore-example",
+      "query": "What threats did the small independent book store identify in its SWOT example?",
+      "relevant": [
+        {
+          "file_name": "PCPD UNIT I NOTES-KINGSTON J.pdf",
+          "chunk_id": "e8f56160f503438f",
+          "passage": "Kingston JEGANATHAN, HOD, JMC, UISAA, GNU \n1.8.3 EXAMPLE OF SWOT ANALYSIS: \nSWOT tool used by a small independent book store: \n \n \n \nHELPFUL HARMFUL \n \n \n \n \nINTERNAL \nSTRENGTHS: \n\uf0b7 Our workers are well educated \nstudents who love books \n\uf0b7"
+        }
+      ],
+      "k": 5,
+      "expected_facts": [
+        "Kingston JEGANATHAN, HOD, JMC, UISAA, GNU \n1.8.3 EXAMPLE OF SWOT ANALYSIS: \nSWOT tool used by a small independent book store: \n \n \n \nHELPFUL HARMFUL \n \n \n \n \nINTERNAL \nSTRENGTHS: \n\uf0b7 Our workers are well educated \nstudents who love books \n\uf0b7"
+      ]
+    },
+    {
+      "id": "varanasi-release-date",
+      "query": "When is Varanasi releasing in theaters worldwide?",
+      "relevant": [
+        {
+          "file_name": "varanaasi.txt",
+          "chunk_id": "fe996c11c575c848",
+          "passage": "\u201cVaranasi\u201d will open in theaters worldwide on April 7, 2027."
+        }
+      ],
+      "k": 5,
+      "expected_facts": [
+        "\u201cVaranasi\u201d will open in theaters worldwide on April 7, 2027."
+      ]
+    },
+    {
+      "id": "varanasi-director",
+      "query": "Who is directing the film Varanasi?",
+      "relevant": [
+        {
+          "file_name": "varanaasi.txt",
+          "chunk_id": "fe996c11c575c848",
+          "passage": "Production Market Share\nThe film\u2019s story spans thousands of years and traverses multiple continents, with locations ranging from Antarctica to Africa to the titular Indian city."
+        }
+      ],
+      "k": 5,
+      "expected_facts": [
+        "Production Market Share\nThe film\u2019s story spans thousands of years and traverses multiple continents, with locations ranging from Antarctica to Africa to the titular Indian city."
+      ]
+    },
+    {
+      "id": "varanasi-composer",
+      "query": "Which Oscar-winning composer is working on Varanasi?",
+      "relevant": [
+        {
+          "file_name": "varanaasi.txt",
+          "chunk_id": "f4df852c559b469e",
+          "passage": "The action-adventure epic reunites the \u201cRRR\u201d helmer with Oscar-winning composer MM Keeravani, who took home the Academy Award for best original song for \u201cNaatu Naatu\u201d from \u201cRRR.\u201d Telugu-language cinema superstar Mahesh Babu leads the cast a"
+        }
+      ],
+      "k": 5,
+      "expected_facts": [
+        "The action-adventure epic reunites the \u201cRRR\u201d helmer with Oscar-winning composer MM Keeravani, who took home the Academy Award for best original song for \u201cNaatu Naatu\u201d from \u201cRRR.\u201d Telugu-language cinema superstar Mahesh Babu leads the cast a"
+      ]
+    },
+    {
+      "id": "varanasi-cast",
+      "query": "Who stars in Varanasi alongside Mahesh Babu?",
+      "relevant": [
+        {
+          "file_name": "varanaasi.txt",
+          "chunk_id": "f4df852c559b469e",
+          "passage": "The action-adventure epic reunites the \u201cRRR\u201d helmer with Oscar-winning composer MM Keeravani, who took home the Academy Award for best original song for \u201cNaatu Naatu\u201d from \u201cRRR.\u201d Telugu-language cinema superstar Mahesh Babu leads the cast a"
+        }
+      ],
+      "k": 5,
+      "expected_facts": [
+        "The action-adventure epic reunites the \u201cRRR\u201d helmer with Oscar-winning composer MM Keeravani, who took home the Academy Award for best original song for \u201cNaatu Naatu\u201d from \u201cRRR.\u201d Telugu-language cinema superstar Mahesh Babu leads the cast a"
+      ]
+    },
+    {
+      "id": "varanasi-characters",
+      "query": "Which characters do Mahesh Babu, Priyanka Chopra Jonas and Prithviraj Sukumaran play in Varanasi?",
+      "relevant": [
+        {
+          "file_name": "varanaasi.txt",
+          "chunk_id": "f4df852c559b469e",
+          "passage": "The action-adventure epic reunites the \u201cRRR\u201d helmer with Oscar-winning composer MM Keeravani, who took home the Academy Award for best original song for \u201cNaatu Naatu\u201d from \u201cRRR.\u201d Telugu-language cinema superstar Mahesh Babu leads the cast a"
+        }
+      ],
+      "k": 5,
+      "expected_facts": [
+        "The action-adventure epic reunites the \u201cRRR\u201d helmer with Oscar-winning composer MM Keeravani, who took home the Academy Award for best original song for \u201cNaatu Naatu\u201d from \u201cRRR.\u201d Telugu-language cinema superstar Mahesh Babu leads the cast a"
+      ]
+    },
+    {
+      "id": "varanasi-locations-genre",
+      "query": "What locations does the Varanasi story span and which franchises is it compared to?",
+      "relevant": [
+        {
+          "file_name": "varanaasi.txt",
+          "chunk_id": "fe996c11c575c848",
+          "passage": "Production Market Share\nThe film\u2019s story spans thousands of years and traverses multiple continents, with locations ranging from Antarctica to Africa to the titular Indian city."
+        }
+      ],
+      "k": 5,
+      "expected_facts": [
+        "Production Market Share\nThe film\u2019s story spans thousands of years and traverses multiple continents, with locations ranging from Antarctica to Africa to the titular Indian city."
+      ]
+    },
+    {
+      "id": "varanasi-producers",
+      "query": "Which banner and producers are behind Varanasi?",
+      "relevant": [
+        {
+          "file_name": "varanaasi.txt",
+          "chunk_id": "47d5adcaab0999c7",
+          "passage": "Sukumaran is a pan-Indian star who has worked across Malayalam, Tamil, Telugu and Hindi-language cinema, with recent credits including the Telugu action drama \u201cSalaar: Part 1 \u2013 Ceasefire,\u201d the Bollywood film \u201cBade Miyan Chote Miyan\u201d and Mal"
+        }
+      ],
+      "k": 5,
+      "expected_facts": [
+        "Sukumaran is a pan-Indian star who has worked across Malayalam, Tamil, Telugu and Hindi-language cinema, with recent credits including the Telugu action drama \u201cSalaar: Part 1 \u2013 Ceasefire,\u201d the Bollywood film \u201cBade Miyan Chote Miyan\u201d and Mal"
+      ]
+    },
+    {
+      "id": "varanasi-first-look",
+      "query": "When did Rajamouli unveil first-look footage of Varanasi?",
+      "relevant": [
+        {
+          "file_name": "varanaasi.txt",
+          "chunk_id": "fe996c11c575c848",
+          "passage": "Rajamouli unveiled first-look footage from the project in November."
+        }
+      ],
+      "k": 5,
+      "expected_facts": [
+        "Rajamouli unveiled first-look footage from the project in November."
+      ]
+    },
+    {
+      "id": "rrr-box-office-rank",
+      "query": "Where does RRR rank among the highest grossing Indian films?",
+      "relevant": [
+        {
+          "file_name": "varanaasi.txt",
+          "chunk_id": "d41966c62e452a03",
+          "passage": "It is the fifth-highest grossing film in the history of Indian cinema."
+        }
+      ],
+      "k": 5,
+      "expected_facts": [
+        "It is the fifth-highest grossing film in the history of Indian cinema."
+      ]
+    },
+    {
+      "id": "mahesh-babu-career",
+      "query": "Which Telugu films has Mahesh Babu starred in?",
+      "relevant": [
+        {
+          "file_name": "varanaasi.txt",
+          "chunk_id": "f4df852c559b469e",
+          "passage": "The action-adventure epic reunites the \u201cRRR\u201d helmer with Oscar-winning composer MM Keeravani, who took home the Academy Award for best original song for \u201cNaatu Naatu\u201d from \u201cRRR.\u201d Telugu-language cinema superstar Mahesh Babu leads the cast a"
+        }
+      ],
+      "k": 5,
+      "expected_facts": [
+        "The action-adventure epic reunites the \u201cRRR\u201d helmer with Oscar-winning composer MM Keeravani, who took home the Academy Award for best original song for \u201cNaatu Naatu\u201d from \u201cRRR.\u201d Telugu-language cinema superstar Mahesh Babu leads the cast a"
+      ]
+    },
+    {
+      "id": "priyanka-chopra-credits",
+      "query": "What are Priyanka Chopra Jonas's Bollywood and Hollywood credits?",
+      "relevant": [
+        {
+          "file_name": "varanaasi.txt",
+          "chunk_id": "d41966c62e452a03",
+          "passage": "Babu is one of Indian cinema\u2019s biggest stars, with a career spanning over two decades in Telugu-language films including \u201cSrimanthudu,\u201d \u201cBharat Ane Nenu\u201d and \u201cMaharshi.\u201d\n\nChopra Jonas has built a career bridging Bollywood and Hollywood, wit"
+        }
+      ],
+      "k": 5,
+      "expected_facts": [
+        "Babu is one of Indian cinema\u2019s biggest stars, with a career spanning over two decades in Telugu-language films including \u201cSrimanthudu,\u201d \u201cBharat Ane Nenu\u201d and \u201cMaharshi.\u201d\n\nChopra Jonas has built a career bridging Bollywood and Hollywood, wit"
+      ]
+    },
+    {
+      "id": "prithviraj-credits",
+      "query": "What recent films has Prithviraj Sukumaran appeared in across Indian languages?",
+      "relevant": [
+        {
+          "file_name": "varanaasi.txt",
+          "chunk_id": "47d5adcaab0999c7",
+          "passage": "Sukumaran is a pan-Indian star who has worked across Malayalam, Tamil, Telugu and Hindi-language cinema, with recent credits including the Telugu action drama \u201cSalaar: Part 1 \u2013 Ceasefire,\u201d the Bollywood film \u201cBade Miyan Chote Miyan\u201d and Mal"
+        }
+      ],
+      "k": 5,
+      "expected_facts": [
+        "Sukumaran is a pan-Indian star who has worked across Malayalam, Tamil, Telugu and Hindi-language cinema, with recent credits including the Telugu action drama \u201cSalaar: Part 1 \u2013 Ceasefire,\u201d the Bollywood film \u201cBade Miyan Chote Miyan\u201d and Mal"
+      ]
+    },
+    {
+      "id": "cross-doc-aamir-and-mahesh",
+      "query": "Which documents mention Indian film personalities such as Aamir Khan and Mahesh Babu?",
+      "relevant": [
+        {
+          "file_name": "PCPD UNIT I NOTES-KINGSTON J.pdf",
+          "chunk_id": "1f993b59704ea92f",
+          "passage": "We are really fortunate that such a \nrationalist is the Principal Architect of Indian Constitution."
+        },
+        {
+          "file_name": "varanaasi.txt",
+          "chunk_id": "fe996c11c575c848",
+          "passage": "Production Market Share\nThe film\u2019s story spans thousands of years and traverses multiple continents, with locations ranging from Antarctica to Africa to the titular Indian city."
+        }
+      ],
+      "k": 5,
+      "expected_facts": [
+        "We are really fortunate that such a \nrationalist is the Principal Architect of Indian Constitution.",
+        "Production Market Share\nThe film\u2019s story spans thousands of years and traverses multiple continents, with locations ranging from Antarctica to Africa to the titular Indian city."
+      ]
+    },
+    {
+      "id": "cross-doc-indian-figures",
+      "query": "Which documents refer to well-known Indian figures as examples, such as Dr. Babasaheb Ambedkar or S.S. Rajamouli?",
+      "relevant": [
+        {
+          "file_name": "PCPD UNIT I NOTES-KINGSTON J.pdf",
+          "chunk_id": "1f993b59704ea92f",
+          "passage": "Babasaheb Ambedkar has \nexhibited rationalism as his cardinal trait."
+        },
+        {
+          "file_name": "varanaasi.txt",
+          "chunk_id": "d41966c62e452a03",
+          "passage": "Rajamouli\u2019s \u201cRRR\u201d became a global phenomenon following its 2022 release, earning widespread critical acclaim and audience enthusiasm that extended well beyond traditional Indian cinema markets, with the film\u2019s Academy Awards success marking"
+        }
+      ],
+      "k": 5,
+      "expected_facts": [
+        "Babasaheb Ambedkar has \nexhibited rationalism as his cardinal trait.",
+        "Rajamouli\u2019s \u201cRRR\u201d became a global phenomenon following its 2022 release, earning widespread critical acclaim and audience enthusiasm that extended well beyond traditional Indian cinema markets, with the film\u2019s Academy Awards success marking"
+      ]
+    }
+  ]
+}

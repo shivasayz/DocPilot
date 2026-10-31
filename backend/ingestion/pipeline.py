@@ -10,7 +10,6 @@ from pathlib import Path
 from db.connection import db
 from crud.notes import find_notes_by_user
 from ingestion.data_loader import SKIP_DIR_NAMES, load_documents_for_paths, notes_to_documents
-from ingestion.vectorstore import FaissVectorStore
 
 STORAGE_DIR = "storage"
 knowledge_sources = db["knowledge_sources"]
@@ -96,6 +95,8 @@ async def ingest_user_documents(user_id: str) -> dict:
 
     if not documents:
         raise ValueError("No documents or notes found to ingest")
+
+    from ingestion.vectorstore import FaissVectorStore
 
     store = FaissVectorStore(persist_dir=user_faiss_dir(user_id))
     total_chunks = store.build_from_documents(documents)

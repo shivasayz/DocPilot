@@ -67,7 +67,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Copilot — Personal Learning Assistant" },
+      { title: "DocPilot — Ask your documents" },
       {
         name: "description",
         content:
@@ -118,7 +118,7 @@ function RootComponent() {
     setUnauthorizedHandler(() => {
       logout();
       setAuthenticated(false);
-      sessionStorage.setItem("copilot.session.expired", "1");
+      sessionStorage.setItem("docpilot.session.expired", "1");
       window.location.assign("/login");
     });
 

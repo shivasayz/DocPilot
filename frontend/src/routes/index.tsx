@@ -38,7 +38,7 @@ import { getQuestionsAsked } from "@/lib/stats";
 
 export const Route = createFileRoute("/")({
   head: () => ({
-    meta: [{ title: "Dashboard — Copilot" }],
+    meta: [{ title: "Dashboard — DocPilot" }],
   }),
   component: Dashboard,
 });
@@ -146,7 +146,7 @@ function Dashboard() {
     {
       label: "Questions Asked",
       value: questions,
-      delta: questions ? "From AI chat" : "Ask Copilot to start",
+      delta: questions ? "From AI chat" : "Ask DocPilot to start",
       icon: MessagesSquare,
       showTrend: questions > 0,
     },
@@ -171,7 +171,7 @@ function Dashboard() {
               <Search className="size-4" /> Quick search
             </Button>
             <Button size="sm" onClick={() => navigate({ to: "/chat" })}>
-              <Sparkles className="size-4" /> Ask Copilot
+              <Sparkles className="size-4" /> Ask DocPilot
             </Button>
           </>
         }

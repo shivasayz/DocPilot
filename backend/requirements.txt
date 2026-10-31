@@ -1,0 +1,27 @@
+# API
+fastapi>=0.115
+uvicorn[standard]>=0.30
+motor>=3.6
+pymongo>=4.10
+certifi
+pydantic>=2.0
+email-validator
+PyJWT>=2.8
+bcrypt==4.0.1
+python-multipart
+python-jose
+httpx
+pytest>=8.0
+
+# RAG
+langchain
+langchain-core
+langchain-community
+langchain-text-splitters
+langchain-groq
+pypdf
+sentence-transformers
+faiss-cpu
+docx2txt
+openpyxl
+numpy

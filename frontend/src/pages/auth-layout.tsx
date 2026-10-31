@@ -124,7 +124,7 @@ export function AuthLayout({ children }: { children: ReactNode }) {
               <div className="grid size-9 place-items-center rounded-lg bg-accent text-accent-foreground shadow-md shadow-accent/20">
                 <Sparkles className="size-4" />
               </div>
-              <span className="text-base font-semibold tracking-tight">Copilot</span>
+              <span className="text-base font-semibold tracking-tight">DocPilot</span>
             </div>
 
             <div>
@@ -158,7 +158,7 @@ export function AuthLayout({ children }: { children: ReactNode }) {
             </div>
 
             <p className="text-[11px] text-muted-foreground">
-              © 2024 Copilot · Terms · Privacy
+              © 2026 DocPilot · Terms · Privacy
             </p>
           </div>
         </div>
@@ -171,7 +171,7 @@ export function AuthLayout({ children }: { children: ReactNode }) {
               <div className="grid size-9 place-items-center rounded-lg bg-accent text-accent-foreground shadow-md shadow-accent/20">
                 <Sparkles className="size-4" />
               </div>
-              <span className="text-base font-semibold tracking-tight">Copilot</span>
+              <span className="text-base font-semibold tracking-tight">DocPilot</span>
             </div>
 
             <motion.div

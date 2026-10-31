@@ -27,7 +27,7 @@ import { incrementQuestionsAsked } from "@/lib/stats";
 import { MarkdownContent } from "@/components/shared/markdown-content";
 
 export const Route = createFileRoute("/chat")({
-  head: () => ({ meta: [{ title: "AI Chat — Copilot" }] }),
+  head: () => ({ meta: [{ title: "AI Chat — DocPilot" }] }),
   component: ChatPage,
 });
 

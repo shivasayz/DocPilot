@@ -28,8 +28,8 @@ export function LoginPage() {
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
 
   useEffect(() => {
-    if (sessionStorage.getItem("copilot.session.expired") === "1") {
-      sessionStorage.removeItem("copilot.session.expired");
+    if (sessionStorage.getItem("docpilot.session.expired") === "1") {
+      sessionStorage.removeItem("docpilot.session.expired");
       toast.error("Session expired");
     }
   }, []);

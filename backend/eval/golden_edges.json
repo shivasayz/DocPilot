@@ -1,0 +1,26 @@
+{
+  "cases": [
+    {
+      "id": "missing-wifi-password",
+      "kind": "unanswerable",
+      "query": "What is the office wifi password?",
+      "relevant": [],
+      "expected_facts": []
+    },
+    {
+      "id": "ambiguous-success",
+      "kind": "ambiguous",
+      "query": "What about success?",
+      "relevant": [{ "file_name": "PCPD UNIT I NOTES-KINGSTON J.pdf" }],
+      "expected_facts": ["Success"]
+    },
+    {
+      "id": "other-user-invoice",
+      "kind": "other_user",
+      "query": "What is the total amount on Macbook Invoice .pdf?",
+      "relevant": [],
+      "forbidden_file_names": ["Macbook Invoice .pdf", "Invoice_2490711969.pdf"],
+      "expected_facts": []
+    }
+  ]
+}

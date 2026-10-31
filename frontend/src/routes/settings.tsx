@@ -11,7 +11,7 @@ import { Settings2, Palette, Shield } from "lucide-react";
 import { useTheme } from "@/lib/theme";
 
 export const Route = createFileRoute("/settings")({
-  head: () => ({ meta: [{ title: "Settings — Copilot" }] }),
+  head: () => ({ meta: [{ title: "Settings — DocPilot" }] }),
   component: SettingsPage,
 });
 

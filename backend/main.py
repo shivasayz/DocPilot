@@ -12,9 +12,9 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title="AI-Project API",
+    title="DocPilot API",
     version="1.0.0",
-    description="API for AI-Project",
+    description="API for DocPilot",
     openapi_url="/api/v1/openapi.json",
     docs_url="/api/v1/docs",
     lifespan=lifespan,

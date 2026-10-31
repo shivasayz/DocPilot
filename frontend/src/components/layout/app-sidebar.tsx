@@ -97,9 +97,9 @@ export function AppSidebar() {
           </div>
           {!collapsed && (
             <div className="flex flex-col leading-tight">
-              <span className="text-sm font-semibold tracking-tight">Copilot</span>
+              <span className="text-sm font-semibold tracking-tight">DocPilot</span>
               <span className="text-[10px] uppercase tracking-wider text-muted-foreground">
-                Personal Learning
+                Ask your docs
               </span>
             </div>
           )}

@@ -37,7 +37,7 @@ import {
 } from "@/lib/api";
 
 export const Route = createFileRoute("/knowledge")({
-  head: () => ({ meta: [{ title: "Knowledge Sources — Copilot" }] }),
+  head: () => ({ meta: [{ title: "Knowledge Sources — DocPilot" }] }),
   component: KnowledgePage,
 });
 

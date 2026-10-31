@@ -51,7 +51,7 @@ export function FloatingWidget({
                 <ChatIcon />
               </span>
               <span>
-                <strong>Copilot</strong>
+                <strong>DocPilot</strong>
                 <small>{authed ? (tab === "ask" ? "Ask your library" : "Capture a quick note") : "Sign in to continue"}</small>
               </span>
             </div>

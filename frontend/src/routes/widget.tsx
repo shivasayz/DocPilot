@@ -35,7 +35,7 @@ import { getToken } from "@/lib/auth";
 import { getWidgetSettings, updateWidgetSettings, type WidgetSettings } from "@/lib/api";
 
 export const Route = createFileRoute("/widget")({
-  head: () => ({ meta: [{ title: "Widget Settings — Copilot" }] }),
+  head: () => ({ meta: [{ title: "Widget Settings — DocPilot" }] }),
   component: WidgetPage,
 });
 
@@ -171,7 +171,7 @@ function WidgetPage() {
               >
                 <div className="flex items-center justify-between border-b border-border px-3 py-2">
                   <div className="flex items-center gap-2 text-xs">
-                    <Sparkles className="size-3 text-accent" /> Copilot
+                    <Sparkles className="size-3 text-accent" /> DocPilot
                   </div>
                   <span className="text-[10px] text-muted-foreground">Ask</span>
                 </div>
@@ -312,7 +312,7 @@ function WidgetPage() {
           <ComingSoonCard
             icon={Camera}
             title="Screen context"
-            description="Capture the active window and ask Copilot to explain or summarise."
+            description="Capture the active window and ask DocPilot to explain or summarise."
           />
           <ComingSoonCard
             icon={Brain}

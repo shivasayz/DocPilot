@@ -10,8 +10,8 @@ export type User = {
   gender?: string;
 };
 
-const USER_KEY = "copilot.auth.user";
-const TOKEN_KEY = "copilot.auth.token";
+const USER_KEY = "docpilot.auth.user";
+const TOKEN_KEY = "docpilot.auth.token";
 
 let currentUser: User | null = (() => {
   if (typeof window === "undefined") return null;

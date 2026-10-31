@@ -309,7 +309,7 @@ export function SignupPage() {
                 </div>
 
                 <div className="space-y-1.5">
-                  <Label>How will you use Copilot?</Label>
+                  <Label>How will you use DocPilot?</Label>
                   <Select value={useCase} onValueChange={setUseCase}>
                     <SelectTrigger><SelectValue placeholder="Select use case" /></SelectTrigger>
                     <SelectContent>

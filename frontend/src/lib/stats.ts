@@ -1,4 +1,4 @@
-const QUESTIONS_KEY = "copilot.stats.questions";
+const QUESTIONS_KEY = "docpilot.stats.questions";
 
 export function getQuestionsAsked(): number {
   if (typeof window === "undefined") return 0;

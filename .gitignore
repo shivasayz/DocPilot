@@ -1,3 +1,10 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+backend/venv/
+backend/eval/reports/*.json
+
 # Logs
 logs
 *.log

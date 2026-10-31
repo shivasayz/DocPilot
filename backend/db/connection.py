@@ -1,9 +1,13 @@
 import certifi
 from motor.motor_asyncio import AsyncIOMotorClient
-from env import MONGO_URL
+from env import DATABASE_NAME, MONGO_URL
 
-client = AsyncIOMotorClient(MONGO_URL, tlsCAFile=certifi.where())
-db = client["intellisource"]
+_client_kwargs = {}
+if MONGO_URL.startswith("mongodb+srv://") or "tls=true" in MONGO_URL.lower():
+    _client_kwargs["tlsCAFile"] = certifi.where()
+
+client = AsyncIOMotorClient(MONGO_URL, **_client_kwargs)
+db = client[DATABASE_NAME]
 
 
 async def connect_db():

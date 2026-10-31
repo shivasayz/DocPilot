@@ -3,7 +3,7 @@ import { LoginPage } from "@/pages/login";
 
 export const Route = createFileRoute("/login")({
   head: () => ({
-    meta: [{ title: "Sign in — Copilot" }],
+    meta: [{ title: "Sign in — DocPilot" }],
   }),
   component: LoginPage,
 });

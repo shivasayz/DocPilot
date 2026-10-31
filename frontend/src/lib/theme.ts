@@ -3,15 +3,15 @@ import { useSyncExternalStore } from "react";
 type Theme = "dark" | "light";
 
 function getThemeKey(): string {
-  if (typeof window === "undefined") return "copilot.theme";
-  const token = localStorage.getItem("copilot.auth.token");
+  if (typeof window === "undefined") return "docpilot.theme";
+  const token = localStorage.getItem("docpilot.auth.token");
   if (token) {
     try {
       const payload = JSON.parse(atob(token.split(".")[1]));
-      return `copilot.theme.${payload.sub}`;
+      return `docpilot.theme.${payload.sub}`;
     } catch {}
   }
-  return "copilot.theme";
+  return "docpilot.theme";
 }
 
 function getStoredTheme(): Theme {

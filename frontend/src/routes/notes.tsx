@@ -25,7 +25,7 @@ import { useAuth } from "@/lib/auth";
 import type { Editor } from "@/components/shared/markdown-editor";
 
 export const Route = createFileRoute("/notes")({
-  head: () => ({ meta: [{ title: "Notes — Copilot" }] }),
+  head: () => ({ meta: [{ title: "Notes — DocPilot" }] }),
   component: NotesPage,
 });
 
