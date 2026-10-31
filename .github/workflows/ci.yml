@@ -24,7 +24,7 @@ jobs:
         working-directory: backend
         run: |
           pip install -r requirements-ci.txt
-          pytest tests/test_smoke.py -q
+          python -m pytest tests/test_smoke.py -q
 
       - name: Set up Node
         uses: actions/setup-node@v4
