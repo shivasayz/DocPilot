@@ -91,7 +91,7 @@ def _abstained(answer: str) -> bool:
 class GenerationEvaluator:
     def __init__(self, model: str = GROQ_MODEL):
         if not GROQ_API_KEY:
-            raise ValueError("GROQ_API_KEY is not set in env.py")
+            raise ValueError("GROQ_API_KEY is not set (put it in backend/.env)")
         self.llm = ChatGroq(api_key=GROQ_API_KEY, model=model)
 
     def _invoke(self, prompt: str) -> str:

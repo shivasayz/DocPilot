@@ -88,7 +88,7 @@ class RAGSearch:
         from ingestion.vectorstore import FaissVectorStore
 
         if not GROQ_API_KEY:
-            raise ValueError("GROQ_API_KEY is not set in env.py")
+            raise ValueError("GROQ_API_KEY is not set (put it in backend/.env)")
 
         persist_dir = user_faiss_dir(user_id)
         faiss_path = os.path.join(persist_dir, "faiss.index")

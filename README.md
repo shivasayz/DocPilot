@@ -83,7 +83,7 @@ desktop/      Floating always-on-top widget
 
 ## Run locally
 
-**Prerequisites:** Python 3.11+, Node 18+, MongoDB (or Atlas), a Groq API key (`backend/env.py`).
+**Prerequisites:** Python 3.11+, Node 18+, MongoDB (or Atlas), a Groq API key.
 
 **1. Backend**
 
@@ -92,6 +92,7 @@ cd backend
 python -m venv venv
 source venv/bin/activate   # Windows: venv\Scripts\activate
 pip install -r requirements.txt
+cp .env.example .env       # fill in MONGO_URL, GROQ_API_KEY, JWT_SECRET
 uvicorn main:app --reload
 ```
 

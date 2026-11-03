@@ -11,6 +11,7 @@ bcrypt==4.0.1
 python-multipart
 python-jose
 httpx
+python-dotenv
 pytest>=8.0
 langchain
 langchain-core
