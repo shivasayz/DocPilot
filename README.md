@@ -18,7 +18,17 @@ DocPilot keeps a private knowledge base per user, retrieves the relevant chunks,
 
 ## How it works
 
-![DocPilot architecture — ingestion pipeline and RAG query flow](DocPilot-architecture.png)
+```text
+Upload / notes  →  chunk + embed  →  FAISS (per user)
+                                           │
+Ask a question  ───────────────────────────┘
+                                           ▼
+                              retrieve top-k chunks
+                                           ▼
+                              Groq generates answer
+                                           ▼
+                              cite sources in the UI
+```
 
 1. **Ingest** — PDF, Word, Excel, CSV, TXT, MD (and notes) are chunked and embedded with Sentence Transformers.
 2. **Store** — Vectors live in a per-user FAISS index; metadata and auth live in MongoDB.
@@ -55,24 +65,7 @@ DocPilot keeps a private knowledge base per user, retrieves the relevant chunks,
 
 ## Architecture
 
-```text
-┌─────────────────┐     ┌──────────────────┐
-│  Web app        │     │  Desktop widget  │
-│  (React)        │     │  (Electron)      │
-└────────┬────────┘     └────────┬─────────┘
-         │  REST + JWT           │
-         └──────────┬────────────┘
-                    ▼
-              ┌──────────┐
-              │  FastAPI │
-              └────┬─────┘
-         ┌─────────┼─────────┐
-         ▼         ▼         ▼
-     MongoDB    FAISS     Groq API
-    (users,   (vectors,  (generation)
-     notes,    per user)
-   settings)
-```
+![DocPilot architecture — ingestion pipeline and RAG query flow](DocPilot-architecture.png)
 
 Widget settings are polled from the same JWT API as the website — no WebSockets, no cross-app login handoff.
 
