@@ -18,17 +18,7 @@ DocPilot keeps a private knowledge base per user, retrieves the relevant chunks,
 
 ## How it works
 
-```text
-Upload / notes  →  chunk + embed  →  FAISS (per user)
-                                           │
-Ask a question  ───────────────────────────┘
-                                           ▼
-                              retrieve top-k chunks
-                                           ▼
-                              Groq generates answer
-                                           ▼
-                              cite sources in the UI
-```
+![DocPilot architecture — ingestion pipeline and RAG query flow](DocPilot-architecture.png)
 
 1. **Ingest** — PDF, Word, Excel, CSV, TXT, MD (and notes) are chunked and embedded with Sentence Transformers.
 2. **Store** — Vectors live in a per-user FAISS index; metadata and auth live in MongoDB.
